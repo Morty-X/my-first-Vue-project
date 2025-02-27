@@ -20,7 +20,7 @@
       </div>
       <div class="w-[700px] h-[35px] flex justify-center items-center">
         <div
-          class="cursor-pointer w-[500px] h-[26px] flex justify-center items-center border border-[#737373] rounded-[8px] bg-[#4b4b4b]"
+          class="cursor-pointer w-[500px] h-[26px] flex justify-center items-center border border-[#737373] rounded-[8px] hover:bg-[#4b4b4b] bg-[#3c3c3d]"
         >
           <Icon
             class="mr-[6px]"
@@ -29,14 +29,24 @@
             height="18"
             style="color: #aeaeae"
           />
-          <span v-text="str" class="text-[14px] text-[#cccccc]"></span>
+          <span
+            v-text="str"
+            class="text-[14px] hover:text-[#929292] text-[#cccccc]"
+          ></span>
         </div>
       </div>
       <div
-        class="cursor-pointer flex-1 h-[35px] items-center flex justify-end gap-[16px] pr-[20px]"
+        class="cursor-default flex-1 h-[35px] items-center flex justify-end gap-[16px] pr-[20px]"
       >
-        <Icon icon="uis:window-grid" width="18" height="18" style="color: #cccccc" />
         <Icon
+          class="cursor-pointer"
+          icon="uis:window-grid"
+          width="18"
+          height="18"
+          style="color: #cccccc"
+        />
+        <Icon
+          class="cursor-pointer"
           icon="icon-park-outline:freeze-column"
           width="18"
           height="18"
@@ -55,12 +65,14 @@
           style="color: #aeaeae"
         /> -->
         <Icon
+          class="cursor-pointer"
           icon="fluent:layout-row-two-split-top-focus-bottom-20-filled"
           width="20"
           height="20"
           style="color: #aeaeae"
         />
         <Icon
+          class="cursor-pointer"
           icon="fluent:layout-column-one-third-right-24-regular"
           width="20"
           height="20"
@@ -146,7 +158,7 @@
           <span>EXPLORER</span>
 
           <div
-            v-on:click="opendrowdown"
+            v-on:click.stop="opendrowdown"
             class="cursor-pointer relative w-[24px] h-[24px] rounded-[6px] hover:bg-[#363737]"
           >
             <span class="inline-block w-[24px] h-[24px] text-center leading-[24px]"
@@ -154,6 +166,7 @@
             >
             <!-- 点击 ... 后右边出现的选项卡 -->
             <div
+              ref="dropdownContains"
               v-show="drowdownVisible"
               class="w-[150px] py-[6px] flex flex-col gap-[2px] px-[4px] bg-[#252526] border border-[#454545] rounded-[10px]"
             >
@@ -166,33 +179,6 @@
               ></div>
             </div>
           </div>
-
-          <!-- <div
-            v-on:click="openDropDown"
-            v-on:mouseenter="showtip"
-            v-on:mouseleave="hidetip"
-            class="cursor-pointer relative w-[20px] h-[20px] rounded-[2px] leading-[20px] hover:bg-red-300"
-          > -->
-          <!-- <span>...</span> -->
-
-          <!-- <div
-              v-show="tootipisShow"
-              class="absolute z-10 w-[80px] h-[20px] border-2 border-sky-500"
-            >
-              提示框
-            </div> -->
-
-          <!-- <div
-              v-show="drowdownVisible"
-              class="absolute w-[160px] z-30 rounded-[10px] h-[112px] border-[#454545] border"
-            > -->
-          <!-- <div
-                v-for="item in drowdownList"
-                v-bind:key="item"
-                v-text="item"
-              ></div> -->
-          <!-- </div> -->
-          <!-- </div> -->
         </div>
       </div>
       <!-- right -->
@@ -366,16 +352,15 @@
 
 // v-bind 是给所有标签属性（官方、自定义）绑定值的
 
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 // 导入组件
 import baz from '@/components/baz.vue'
 import { Icon } from '@iconify/vue'
+import { clickOutside } from '@/hooks/index.js'
 
+// 接受一个内部值，返回一个响应式的、可更改的 ref 对象
 var str = ref('world!')
 
-let drowdownVisible = ref(false)
-
-let tootipisShow = ref(false)
 
 const drowdownList = ['Open Edits', 'Folders', 'Outline', 'Timeline']
 
@@ -398,20 +383,69 @@ const objDataArr = [
   },
 ]
 
-function opendrowdown() {
-  console.log('绑定点击事件')
-  drowdownVisible.value = !drowdownVisible.value
-}
 
-function showtip() {
-  if (!drowdownVisible.value) {
-    tootipisShow.value = true
-  }
-}
+// 头部右侧图标 点击切换图标 并且更改页面布局 
 
-function hidetip() {
-  if (drowdownVisible.value) {
-    tootipisShow.value = false
-  }
+
+
+
+// 渲染的机制是异步的  ele是在页面渲染完成后获得的对象
+// 因ele是引用数据类型 value属性值是 null ,异步获取节点然后赋值给 value
+// const ele = ref(null)
+
+// 然而 ele.value 的打印过程 是同步的，页面加载时 js主线程上的程序
+// 会首先执行，但由于页面渲染还没有完成，所以此时ele并没有获取到,
+// ele.value=null
+// ======================
+// console.log('ele.value', ele.value)
+
+// 注册一个回调函数，在组件挂载完成后执行。
+
+// 将点击某 dom 元素外的区域，该DOM元素隐藏的逻辑封装成一个 函数
+
+// 将点击 ... 下拉选择框出现，点击菜单外围，菜单隐藏的功能 组合起来
+function actionDropDown() {
+  // 菜单是否显示
+  let visible = ref(false)
+
+  // 菜单 dom 元素
+  const domRef = ref(null)
+  /**
+   * 打开对话框或界面的函数
+   * 将 visible.value 设置为 true，以控制界面的显示状态
+   */
+  const open = () => (visible.value = true)
+  // 使用 clickOutside 指令监听点击事件，当点击不在 domRef 元素内部时
+  // 将 visible 的值设置为 false
+  clickOutside(domRef, () => {
+    visible.value = false
+  })
+
+  return { visible, domRef, open }
 }
+// 解构赋值从actionDropDown函数返回的对象中的属性，以便在当前作用域内直接使用
+// visible属性重命名为drowdownVisible，用于控制下拉菜单的显示与隐藏
+// domRef属性重命名为dropdownContains，引用下拉菜单的DOM元素
+// open属性重命名为opendrowdown，用于执行打开下拉菜单的操作
+const {
+  visible: drowdownVisible,
+  domRef: dropdownContains,
+  open: opendrowdown,
+} = actionDropDown()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </script>
