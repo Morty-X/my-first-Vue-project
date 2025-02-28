@@ -118,6 +118,7 @@
     <div class="flex-1 flex">
       <!-- left -->
       <!-- 左侧 选项 图标 部分 -->
+
       <div
         class="w-[48px] bg-[#333] flex-col flex py-[10px] justify-between cursor-pointer"
       >
@@ -154,8 +155,10 @@
           />
         </div>
       </div>
+
       <!-- middle -->
       <!-- 文件目录列表 -->
+
       <div v-show="leftBarVisible" class="w-[307px] bg-[#252526]">
         <!-- 下拉菜单功能 -->
         <div
@@ -186,7 +189,7 @@
             </div>
           </div>
         </div>
-        <ul class="text-[#fff] bg-red-400 px-[1vw] text-[1.2vw]">
+        <ul class="text-[#fff] bg-red-400 px-[12px] text-[16px]">
           <li
             class="cursor-pointer"
             v-for="file in responseData"
@@ -197,20 +200,32 @@
       </div>
 
       <!-- 中间文件预览区 -->
-      <div class="w-full bg-[#1e1e1e] flex flex-col">
-        <div class="bg-[#1e1e1e] w-full flex-1"></div>
+
+      <div class="flex-1 bg-[#1e1e1e] flex flex-col">
+        <div class="bg-[#1e1e1e] flex-1"></div>
+
         <div
           v-show="bottomBarVisible"
-          class="w-full border-[#363636] border-t h-[10vw] bg-[#1e1e1e]"
-        ></div>
+          class="w-full border-[#363636] border-t h-[200px] bg-[#1e1e1e]"
+        >
+          <!-- transition ease-in-out delay-250 hover:bg-[#007acc] -->
+          <div
+            ref="bottomBarPoint"
+            class="w-full cursor-row-resize h-[3px]"
+            :class="{
+              highlight: isHoverSplit,
+            }"
+            @mouseenter="isHoverSplit = true"
+            @mouseleave="isHoverSplit = false"
+          ></div>
+        </div>
       </div>
 
-      
       <div
         v-show="rightBarVisible"
         class="w-[300px] px-[12px] py-[8px] h-full bg-[#252526]"
       >
-        <div class="w-full flex h-[20px]  ">
+        <div class="w-full flex h-[20px]">
           <div class="w-1/2 flex text-left justify-start items-center">
             <div
               class="mr-[1vw] w-[20px] h-[24px] flex justify-center items-center border-b border-[#e1e1e1]"
@@ -263,7 +278,7 @@
             <div
               @click="rightBarVisible = !rightBarVisible"
               v-show="rightBarVisible"
-              class="flex w-[20px] h-[20px] justify-center items-center  ml-[3px] cursor-pointer hover:bg-[#363737] rounded-[0.4vw]"
+              class="flex w-[20px] h-[20px] justify-center items-center ml-[3px] cursor-pointer hover:bg-[#363737] rounded-[0.4vw]"
             >
               <Icon
                 icon="ion:close-outline"
@@ -365,6 +380,21 @@
 </template>
 
 <script setup>
+import { ref, onMounted, watchEffect, reactive } from 'vue';
+// 导入组件
+import baz from '@/components/baz.vue';
+import { Icon } from '@iconify/vue';
+import { clickOutside, useSetting } from '@/hooks';
+import axios from 'axios';
+import { isRef, unref, toRef, toRefs, toRaw, toValue } from 'vue';
+
+// 根据 key值('layout') 获取对应的数据，以及一个改变属性值的方法
+// 这个方法便于后期制作拖拽分栏效果改变DOM的样式
+// 另外，这些数据需要本地存储
+// 
+const { setting: layoutSetting, undateSetting: undateLayoutSetting } =
+  useSetting('layout');
+
 // 取消dom操作 转而用指令替代
 // 在 Vue.js中 指令是操作dom的唯一方法
 // 指令是以 v- 开头的一种特殊标签自定义属性，具备操作 Dom 的能力
@@ -380,13 +410,20 @@
 
 // v-bind 是给所有标签属性（官方、自定义）绑定值的
 
-import { ref, onMounted, watchEffect } from 'vue';
-// 导入组件
-import baz from '@/components/baz.vue';
-import { Icon } from '@iconify/vue';
-import { clickOutside } from '@/hooks';
-import axios from 'axios';
-import { data } from 'autoprefixer';
+// 命名规范：组合式函数的名称必须以 use 开头
+
+// 普通函数和组合式函数 有什么区别
+
+// 1.响应式数据处理(例如 ref ,onMounted,watchEffect...)
+// 2、逻辑复用 3、生命周期钩子
+// 4、每个组合式函数都是独立的作用域，
+// 5、组合式 API 鼓励将功能拆分为更小的组合式函数
+
+// 组合式 函数更加方便了对状态和数据的复用
+
+// 组合式函数如何使用
+
+// 组合式函数只能使用在两个位置：组件的script标签的顶层 or 其它组合式函数中
 
 // 接受一个内部值，返回一个响应式的、可更改的 ref 对象
 var str = ref('world!');
@@ -413,16 +450,20 @@ const objDataArr = [
 ];
 
 // 头部右侧图标 点击切换图标 并且更改页面布局
-
+// 用于控制 侧边栏显示/隐藏
 const leftBarVisible = ref(false);
 const rightBarVisible = ref(false);
 const bottomBarVisible = ref(false);
+// 那么现在我们需要将 侧边栏的布局状态保存在 localStorage中
+// 1.在 settings.json文件中编写配置项
+// 2.页面第一次加载，从localstorage中读取我们设置 layout 项中的数据渲染页面
 
 // 接着 让页面的布局 跟随我响应式数据的变化而更改
 
-// watchEffect(() => {
 
-// })
+
+
+
 
 // 渲染的机制是异步的  ele是在页面渲染完成后获得的对象
 // 因ele是引用数据类型 value属性值是 null ,异步获取节点然后赋值给 value
@@ -544,15 +585,68 @@ watchEffect(() => {
   console.log(responseData.value);
 });
 
-// axios
-//   .get('/veet/api')
-//   .then((res) => {
-//     console.log(res.data);
-//   })
-//   .catch((err) => {
-//     console.log(err);
-//   })
-//   .finally(() => {
-//     console.log('请求已发送！');
-//   });
+function useMoveColumn(domEleRef) {
+  const distanceX = ref(0);
+  const distanceY = ref(0);
+  // 明确传入的是不是 ref 的dom元素
+  if (!isRef(domEleRef) && unref(domEleRef) instanceof HTMLElement)
+    throw new Error('参数不是 ref 或不是 HTML元素');
+
+  onMounted(() => {
+    unref(domEleRef).addEventListener('mousedown', ({ x: startX, y: startY }) => {
+      const onMouseMove = ({ x: currentX, y: currentY }) => {
+        distanceX.value = currentX - startX;
+        distanceY.value = currentY - startY;
+      };
+
+      document.addEventListener('mousemove', onMouseMove);
+
+      document.addEventListener('mouseup', () => {
+        document.removeEventListener('mousemove', onMouseMove);
+      });
+    });
+  });
+  return { distanceX, distanceY };
+}
+
+const isHoverSplit = ref(false);
+
+const bar1 = reactive({
+  a: 1,
+  b: 2,
+  c: 44,
+});
+const bar2 = ref({
+  a: 1,
+  b: 2,
+});
+
+const refsBar = toRefs(bar1);
+console.log(refsBar.a.value);
+console.log(refsBar.b.value);
+console.log(refsBar.c.value);
+// 将reactive 格式数据转为 原始格式
+console.log(JSON.parse(JSON.stringify(toValue(bar1))));
 </script>
+
+<!-- ===========================CSS样式============================== -->
+<!--scoped 表示样式隔离  -->
+<style scoped>
+@keyframes delayAppearSplitBar {
+  0% {
+    background-color: transparent;
+  }
+
+  50% {
+    background-color: transparent;
+  }
+
+  100% {
+    background-color: #007acc;
+  }
+}
+
+.highlight {
+  animation: delayAppearSplitBar 1.2s forwards;
+}
+</style>

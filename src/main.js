@@ -5,6 +5,7 @@ import '@/main.css'
 // 作用：创建一个Vue应用
 import { createApp } from 'vue'
 
+
 // 导入全局样式文件，用于统一管理项目的样式
 // import './style.scss'
 
