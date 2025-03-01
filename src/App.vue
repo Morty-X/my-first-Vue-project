@@ -6,36 +6,16 @@
 
       <div class="w-[60vw] h-[35px] flex justify-center items-center">
         <div class="w-[15vw] justify-between items-center mr-[18px] h-full">
-          <Icon
-            class="inline-block cursor-pointer"
-            icon="solar:arrow-left-outline"
-            width="20"
-            height="20"
-            style="color: #fff"
-          />
-          <Icon
-            class="inline-block ml-[10px] cursor-pointer"
-            icon="solar:arrow-right-linear"
-            width="20"
-            height="20"
-            style="color: #fff"
-          />
+          <Icon class="inline-block cursor-pointer" icon="solar:arrow-left-outline" width="20" height="20"
+            style="color: #fff" />
+          <Icon class="inline-block ml-[10px] cursor-pointer" icon="solar:arrow-right-linear" width="20" height="20"
+            style="color: #fff" />
         </div>
 
         <div
-          class="cursor-pointer w-[40vw] mr-[8vw] h-[26px] flex justify-center items-center border border-[#737373] rounded-[8px] hover:bg-[#4b4b4b] bg-[#3c3c3d]"
-        >
-          <Icon
-            class="mr-[6px]"
-            icon="quill:search"
-            width="18"
-            height="18"
-            style="color: #aeaeae"
-          />
-          <span
-            v-text="str"
-            class="text-[14px] hover:text-[#929292] text-[#cccccc]"
-          ></span>
+          class="cursor-pointer w-[40vw] mr-[8vw] h-[26px] flex justify-center items-center border border-[#737373] rounded-[8px] hover:bg-[#4b4b4b] bg-[#3c3c3d]">
+          <Icon class="mr-[6px]" icon="quill:search" width="18" height="18" style="color: #aeaeae" />
+          <span v-text="str" class="text-[14px] hover:text-[#929292] text-[#cccccc]"></span>
         </div>
       </div>
 
@@ -43,73 +23,30 @@
 
       <div class="h-full w-[20vw] justify-end pr-[10px] flex items-center">
         <div class="flex ml-[6px] cursor-pointer">
-          <Icon
-            class="cursor-pointer"
-            icon="codicon:layout"
-            width="24"
-            height="24"
-            style="color: #cccccc"
-          />
+          <Icon class="cursor-pointer" icon="codicon:layout" width="24" height="24" style="color: #cccccc" />
         </div>
+
         <!-- 使用Vue条件渲染图标 -->
-        <div
-          @click.stop="leftBarVisible = !leftBarVisible"
-          class="flex ml-[6px] cursor-pointer"
-        >
-          <Icon
-            v-if="leftBarVisible"
-            icon="meteor-icons:sidebar"
-            width="22"
-            height="22"
-            style="color: #cccccc"
-          />
-          <Icon
-            v-else
-            icon="tabler:layout-sidebar-filled"
-            width="24"
-            height="24"
-            style="color: #cccccc"
-          />
+        <div @click.stop="layoutSetting.leftBar.visible = !layoutSetting.leftBar.visible"
+          class="flex ml-[6px] cursor-pointer">
+          <Icon v-if="layoutSetting.leftBar.visible" icon="tabler:layout-sidebar-filled" width="24" height="24"
+            style="color: #cccccc" />
+          <Icon v-else icon="meteor-icons:sidebar" width="22" height="22" style="color: #cccccc" />
+
         </div>
 
-        <div
-          @click.stop="bottomBarVisible = !bottomBarVisible"
-          class="flex ml-[6px] cursor-pointer"
-        >
-          <Icon
-            v-if="bottomBarVisible"
-            icon="tabler:layout-bottombar-filled"
-            width="24"
-            height="24"
-            style="color: #cccccc"
-          />
-          <Icon
-            v-else
-            icon="ci:bar-bottom"
-            width="24"
-            height="24"
-            style="color: #cccccc"
-          />
+        <div @click.stop="layoutSetting.bottomBar.visible = !layoutSetting.bottomBar.visible"
+          class="flex ml-[6px] cursor-pointer">
+          <Icon v-if="layoutSetting.bottomBar.visible" icon="tabler:layout-bottombar-filled" width="24" height="24"
+            style="color: #cccccc" />
+          <Icon v-else icon="ci:bar-bottom" width="24" height="24" style="color: #cccccc" />
         </div>
 
-        <div
-          @click.stop="rightBarVisible = !rightBarVisible"
-          class="flex ml-[6px] cursor-pointer"
-        >
-          <Icon
-            v-if="rightBarVisible"
-            icon="tabler:layout-sidebar-right-filled"
-            width="24"
-            height="24"
-            style="color: #cccccc"
-          />
-          <Icon
-            v-else
-            icon="tabler:layout-sidebar-right"
-            width="24"
-            height="24"
-            style="color: #cccccc"
-          />
+        <div @click.stop="layoutSetting.rightBar.visible = !layoutSetting.rightBar.visible"
+          class="flex ml-[6px] cursor-pointer">
+          <Icon v-if="layoutSetting.rightBar.visible" icon="tabler:layout-sidebar-right-filled" width="24" height="24"
+            style="color: #cccccc" />
+          <Icon v-else icon="tabler:layout-sidebar-right" width="24" height="24" style="color: #cccccc" />
         </div>
       </div>
     </div>
@@ -119,83 +56,47 @@
       <!-- left -->
       <!-- 左侧 选项 图标 部分 -->
 
-      <div
-        class="w-[48px] bg-[#333] flex-col flex py-[10px] justify-between cursor-pointer"
-      >
+      <div class="w-[48px] bg-[#333] flex-col flex py-[10px] justify-between cursor-pointer">
+
         <div class="w-full h-[300px] flex flex-col justify-between items-center">
-          <Icon
-            icon="codicon:github"
-            width="28"
-            height="28"
-            class="text-[#fff] hover:text-[#c2c2c2]"
-          />
+          <Icon icon="codicon:github" width="28" height="28" class="text-[#fff] hover:text-[#c2c2c2]" />
           <!-- =========下列可循环渲染=========== -->
           <!-- ["fa-solid:copy","quill:search",'tdesign:git-branch','qlementine-icons:run-debug-16'
             ,'codicon:extensions','mage:robot'] -->
-          <Icon
-            v-for="(item, index) in customerIconName"
-            v-bind:key="item"
-            v-bind:icon="item"
-            @click="customerMenuItemIndex = index"
-            width="28"
-            height="28"
-            class="hover:text-[#fff] text-[#858585]"
-            :class="{ 'text-[#fff]': customerMenuItemIndex === index }"
-          />
+          <Icon v-for="(item, index) in customerIconName" v-bind:key="item" v-bind:icon="item"
+            @click="customerMenuItemIndex = index" width="28" height="28" class="hover:text-[#fff] text-[#858585]"
+            :class="{ 'text-[#fff]': customerMenuItemIndex === index }" />
         </div>
+
         <div class="w-full flex-1 items-center flex flex-col justify-end gap-[18px]">
           <!-- ['qlementine-icons:user-16','material-symbols:settings-outline'] -->
-          <Icon
-            v-for="(item, index) in systemIconName"
-            v-bind:key="item"
-            :icon="item"
-            width="28"
-            height="28"
-            class="hover:text-[#fff] text-[#858585]"
-          />
+          <Icon v-for="(item, index) in systemIconName" v-bind:key="item" :icon="item" width="28" height="28"
+            class="hover:text-[#fff] text-[#858585]" />
         </div>
       </div>
 
       <!-- middle -->
       <!-- 文件目录列表 -->
 
-      <div v-show="leftBarVisible" class="w-[307px] bg-[#252526]">
+      <div v-show="layoutSetting.leftBar.visible" class="w-[307px] bg-[#252526]">
         <!-- 下拉菜单功能 -->
-        <div
-          class="flex items-center h-[30px] text-[14px] text-[#eee] justify-between px-[12px]"
-        >
+        <div class="flex items-center h-[30px] text-[14px] text-[#eee] justify-between px-[12px]">
           <span>EXPLORER</span>
 
-          <div
-            v-on:click.stop="opendrowdown"
-            class="cursor-pointer relative w-[24px] h-[24px] rounded-[6px] hover:bg-[#363737]"
-          >
-            <span class="inline-block w-[24px] h-[24px] text-center leading-[24px]"
-              >···</span
-            >
+          <div v-on:click.stop="opendrowdown"
+            class="cursor-pointer relative w-[24px] h-[24px] rounded-[6px] hover:bg-[#363737]">
+            <span class="inline-block w-[24px] h-[24px] text-center leading-[24px]">···</span>
             <!-- 点击 ... 后右边出现的选项卡 -->
-            <div
-              ref="dropdownContains"
-              v-show="drowdownVisible"
-              class="w-[150px] py-[6px] flex flex-col gap-[2px] px-[4px] bg-[#252526] border border-[#454545] rounded-[10px]"
-            >
+            <div ref="dropdownContains" v-show="drowdownVisible"
+              class="w-[150px] py-[6px] flex flex-col gap-[2px] px-[4px] bg-[#252526] border border-[#454545] rounded-[10px]">
               <!-- <div class="w-full rounded-[6px] h-[28px] bg-[#0078d4]"></div> -->
-              <div
-                class="w-full pl-[6px] leading-[28px] rounded-[6px] h-[28px] hover:bg-[#0078d4]"
-                v-for="item in drowdownList"
-                v-bind:key="item"
-                v-text="item"
-              ></div>
+              <div class="w-full pl-[6px] leading-[28px] rounded-[6px] h-[28px] hover:bg-[#0078d4]"
+                v-for="item in drowdownList" v-bind:key="item" v-text="item"></div>
             </div>
           </div>
         </div>
         <ul class="text-[#fff] bg-red-400 px-[12px] text-[16px]">
-          <li
-            class="cursor-pointer"
-            v-for="file in responseData"
-            :key="file.name"
-            v-text="file.name"
-          ></li>
+          <li class="cursor-pointer" v-for="file in responseData" :key="file.name" v-text="file.name"></li>
         </ul>
       </div>
 
@@ -204,88 +105,40 @@
       <div class="flex-1 bg-[#1e1e1e] flex flex-col">
         <div class="bg-[#1e1e1e] flex-1"></div>
 
-        <div
-          v-show="bottomBarVisible"
-          class="w-full border-[#363636] border-t h-[200px] bg-[#1e1e1e]"
-        >
+        <div v-show="layoutSetting.bottomBar.visible" class="w-full border-[#363636] border-t h-[200px] bg-[#1e1e1e]">
           <!-- transition ease-in-out delay-250 hover:bg-[#007acc] -->
-          <div
-            ref="bottomBarPoint"
-            class="w-full cursor-row-resize h-[3px]"
-            :class="{
-              highlight: isHoverSplit,
-            }"
-            @mouseenter="isHoverSplit = true"
-            @mouseleave="isHoverSplit = false"
-          ></div>
+          <div ref="elementRef" class="w-full cursor-row-resize h-[3px] highlight"></div>
         </div>
       </div>
 
-      <div
-        v-show="rightBarVisible"
-        class="w-[300px] px-[12px] py-[8px] h-full bg-[#252526]"
-      >
+      <div v-show="layoutSetting.rightBar.visible" class="w-[300px] px-[12px] py-[8px] h-full bg-[#252526]">
         <div class="w-full flex h-[20px]">
           <div class="w-1/2 flex text-left justify-start items-center">
-            <div
-              class="mr-[1vw] w-[20px] h-[24px] flex justify-center items-center border-b border-[#e1e1e1]"
-            >
-              <Icon
-                icon="ion:chatbox-ellipses-outline"
-                width="16"
-                height="16"
-                class="hover:text-[#b2b2b2] text-[#e1e1e1]"
-              />
+            <div class="mr-[1vw] w-[20px] h-[24px] flex justify-center items-center border-b border-[#e1e1e1]">
+              <Icon icon="ion:chatbox-ellipses-outline" width="16" height="16"
+                class="hover:text-[#b2b2b2] text-[#e1e1e1]" />
             </div>
             <div class="mr-[1vw] w-[20px] h-[24px] flex justify-center items-center">
-              <Icon
-                icon="fluent:clipboard-text-edit-24-regular"
-                width="16"
-                height="16"
-                class="hover:text-[#e1e1e1] text-[#b2b2b2]"
-              />
+              <Icon icon="fluent:clipboard-text-edit-24-regular" width="16" height="16"
+                class="hover:text-[#e1e1e1] text-[#b2b2b2]" />
             </div>
           </div>
           <div class="w-1/2 h-full justify-end flex items-center">
             <div class="flex">
-              <Icon
-                icon="si:add-duotone"
-                width="24"
-                height="24"
-                style="color: #787878"
-              />
+              <Icon icon="si:add-duotone" width="24" height="24" style="color: #787878" />
             </div>
 
             <div class="flex">
-              <Icon
-                icon="radix-icons:countdown-timer"
-                width="18"
-                height="18"
-                style="color: #787878"
-              />
+              <Icon icon="radix-icons:countdown-timer" width="18" height="18" style="color: #787878" />
             </div>
 
             <div
-              class="flex w-[20px] h-[20px] justify-center items-center ml-[3px] cursor-pointer hover:bg-[#363737] rounded-[0.4vw]"
-            >
-              <Icon
-                icon="ri:more-line"
-                width="18"
-                height="18"
-                style="color: #c5c5c5"
-              />
+              class="flex w-[20px] h-[20px] justify-center items-center ml-[3px] cursor-pointer hover:bg-[#363737] rounded-[0.4vw]">
+              <Icon icon="ri:more-line" width="18" height="18" style="color: #c5c5c5" />
             </div>
-            <div
-              @click="rightBarVisible = !rightBarVisible"
-              v-show="rightBarVisible"
-              class="flex w-[20px] h-[20px] justify-center items-center ml-[3px] cursor-pointer hover:bg-[#363737] rounded-[0.4vw]"
-            >
-              <Icon
-                icon="ion:close-outline"
-                width="18"
-                height="18"
-                style="color: #c5c5c5"
-              />
+            <div @click="rightBarVisible = !rightBarVisible" v-show="rightBarVisible"
+              class="flex w-[20px] h-[20px] justify-center items-center ml-[3px] cursor-pointer hover:bg-[#363737] rounded-[0.4vw]">
+              <Icon icon="ion:close-outline" width="18" height="18" style="color: #c5c5c5" />
             </div>
           </div>
         </div>
@@ -293,61 +146,30 @@
     </div>
 
     <!-- end 底部内容 -->
-    <div
-      class="w-full flex justify-between text-[#fff] text-[12px] h-[22px] bg-[#007acc]"
-    >
+    <div class="w-full flex justify-between text-[#fff] text-[12px] h-[22px] bg-[#007acc]">
       <div class="h-[22px] flex-1 inline-flex">
-        <div
-          class="w-[100px] h-full hover:bg-[#329071] bg-[#16825d] flex justify-center items-center cursor-pointer"
-        >
-          <Icon
-            icon="icon-park-outline:code-one"
-            width="16"
-            height="16"
-            style="color: #fff"
-          />
+        <div class="w-[100px] h-full hover:bg-[#329071] bg-[#16825d] flex justify-center items-center cursor-pointer">
+          <Icon icon="icon-park-outline:code-one" width="16" height="16" style="color: #fff" />
 
           vuejs/vue
         </div>
 
-        <div
-          class="w-[70px] h-full hover:bg-[#1f8ad2] flex justify-center items-center cursor-pointer"
-        >
-          <Icon
-            class="mr-[4px]"
-            icon="oui:branch"
-            width="14"
-            height="14"
-            style="color: #fff"
-          />
+        <div class="w-[70px] h-full hover:bg-[#1f8ad2] flex justify-center items-center cursor-pointer">
+          <Icon class="mr-[4px]" icon="oui:branch" width="14" height="14" style="color: #fff" />
           main
         </div>
 
-        <div
-          class="w-[22px] h-[22px] flex cursor-pointer justify-center items-center hover:bg-[#1f8ad2]"
-        >
+        <div class="w-[22px] h-[22px] flex cursor-pointer justify-center items-center hover:bg-[#1f8ad2]">
           <Icon icon="ion:reload" width="16" height="16" style="color: #fff" />
         </div>
 
-        <div
-          @click="bottomBarVisible = !bottomBarVisible"
-          class="w-[70px] select-none cursor-pointer align-bottom text-center h-full hover:bg-[#1f8ad2]"
-        >
-          <Icon
-            class="inline-block mx-[3px] translate-y-[2px]"
-            icon="codicon:error"
-            width="16"
-            height="16"
-            style="color: #fff"
-          />
+        <div @click="bottomBarVisible = !bottomBarVisible"
+          class="w-[70px] select-none cursor-pointer align-bottom text-center h-full hover:bg-[#1f8ad2]">
+          <Icon class="inline-block mx-[3px] translate-y-[2px]" icon="codicon:error" width="16" height="16"
+            style="color: #fff" />
           <span class="inline-block translate-y-[3px]">0</span>
-          <Icon
-            class="inline-block mx-[3px] translate-y-[2px]"
-            icon="typcn:warning-outline"
-            width="16"
-            height="16"
-            style="color: #fff"
-          />
+          <Icon class="inline-block mx-[3px] translate-y-[2px]" icon="typcn:warning-outline" width="16" height="16"
+            style="color: #fff" />
           <span class="inline-block translate-y-[3px]">0</span>
         </div>
 
@@ -356,22 +178,16 @@
             <Icon icon="line-md:heart" width="18" height="18" style="color: #fff" />
             <span class="text-[14px] ml-[4px] cursor-default"> Sponsors:</span>
           </div>
-          <div
-            class="text-[14px] h-full px-[8px] hover:bg-[#1f8ad2] cursor-pointer text-center"
-          >
+          <div class="text-[14px] h-full px-[8px] hover:bg-[#1f8ad2] cursor-pointer text-center">
             morty
           </div>
         </div>
       </div>
       <div class="h-[22px] w-[130px] flex items-center">
-        <div
-          class="cursor-pointer w-[100px] hover:bg-[#1f8ad2] text-center h-full leading-[22px]"
-        >
+        <div class="cursor-pointer w-[100px] hover:bg-[#1f8ad2] text-center h-full leading-[22px]">
           Layout: US
         </div>
-        <div
-          class="w-[22px] h-full flex justify-center items-center hover:bg-[#1f8ad2] cursor-pointer"
-        >
+        <div class="w-[22px] h-full flex justify-center items-center hover:bg-[#1f8ad2] cursor-pointer">
           <Icon icon="mdi:bell-outline" width="14" height="14" style="color: #fff" />
         </div>
       </div>
@@ -380,20 +196,34 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watchEffect, reactive } from 'vue';
+import {
+  ref,
+  onMounted,
+  watchEffect,
+  reactive,
+  isRef,
+  unref,
+  toRef,
+  toRefs,
+  toRaw,
+  toValue,
+} from 'vue';
 // 导入组件
 import baz from '@/components/baz.vue';
 import { Icon } from '@iconify/vue';
 import { clickOutside, useSetting } from '@/hooks';
 import axios from 'axios';
-import { isRef, unref, toRef, toRefs, toRaw, toValue } from 'vue';
 
 // 根据 key值('layout') 获取对应的数据，以及一个改变属性值的方法
 // 这个方法便于后期制作拖拽分栏效果改变DOM的样式
 // 另外，这些数据需要本地存储
-// 
+
 const { setting: layoutSetting, undateSetting: undateLayoutSetting } =
   useSetting('layout');
+
+console.log(toValue(layoutSetting));
+
+console.log(toValue(layoutSetting).leftBar.visible);
 
 // 取消dom操作 转而用指令替代
 // 在 Vue.js中 指令是操作dom的唯一方法
@@ -459,11 +289,6 @@ const bottomBarVisible = ref(false);
 // 2.页面第一次加载，从localstorage中读取我们设置 layout 项中的数据渲染页面
 
 // 接着 让页面的布局 跟随我响应式数据的变化而更改
-
-
-
-
-
 
 // 渲染的机制是异步的  ele是在页面渲染完成后获得的对象
 // 因ele是引用数据类型 value属性值是 null ,异步获取节点然后赋值给 value
@@ -585,31 +410,57 @@ watchEffect(() => {
   console.log(responseData.value);
 });
 
+/**
+ * 使用 Vue 的组合式 API 实现的一个移动列的功能
+ * 当用户按下鼠标并移动时，计算鼠标移动的距离
+ *
+ * @param {Ref} domEleRef - 一个 ref 的 DOM 元素引用，用于监听鼠标事件
+ * @returns {Object} - 返回一个对象，包含鼠标在 X 轴和 Y 轴上移动的距离
+ */
 function useMoveColumn(domEleRef) {
+  // 初始化鼠标移动的距离，X 轴和 Y 轴距离都初始化为 0
   const distanceX = ref(0);
   const distanceY = ref(0);
-  // 明确传入的是不是 ref 的dom元素
+
+  // 检查传入的 domEleRef 是否是一个有效的 ref，并且其值是一个 HTMLElement
+  // 如果不是，则抛出一个错误
   if (!isRef(domEleRef) && unref(domEleRef) instanceof HTMLElement)
     throw new Error('参数不是 ref 或不是 HTML元素');
 
+  // 当组件挂载时，添加鼠标事件监听器
   onMounted(() => {
+    // 当鼠标按下时，获取鼠标按下的位置，并监听鼠标移动事件
+    // 这里使用解构赋值从事件对象中提取 x 和 y 属性，并将它们分别赋值给 startX 和 startY 变量
+    // 事件对象是 mousedown 事件的事件对象，包含了鼠标按下时的位置信息
     unref(domEleRef).addEventListener('mousedown', ({ x: startX, y: startY }) => {
+      // 定义一个 onMouseMove 函数，用于计算鼠标移动时的位置变化
+      // 这里使用解构赋值从事件对象中提取 x 和 y 属性，并将它们分别赋值给 currentX 和 currentY 变量
+      // 通过计算当前鼠标位置与起始位置的差值，得到鼠标移动的距离
       const onMouseMove = ({ x: currentX, y: currentY }) => {
         distanceX.value = currentX - startX;
         distanceY.value = currentY - startY;
       };
 
+      // 添加 mousemove 事件监听器，当鼠标移动时调用 onMouseMove 函数
       document.addEventListener('mousemove', onMouseMove);
 
+      // 添加 mouseup 事件监听器，当鼠标释放时移除 mousemove 事件监听器
       document.addEventListener('mouseup', () => {
         document.removeEventListener('mousemove', onMouseMove);
       });
     });
   });
+
+  // 返回鼠标移动的距离，包括 X 轴和 Y 轴的距离
   return { distanceX, distanceY };
 }
 
-const isHoverSplit = ref(false);
+const elementRef = ref(null);
+const { distanceX, distanceY } = useMoveColumn(elementRef);
+watchEffect(() => {
+  console.log(distanceX.value);
+  console.log(distanceY.value);
+});
 
 const bar1 = reactive({
   a: 1,
@@ -646,7 +497,7 @@ console.log(JSON.parse(JSON.stringify(toValue(bar1))));
   }
 }
 
-.highlight {
-  animation: delayAppearSplitBar 1.2s forwards;
+.highlight:hover {
+  animation: delayAppearSplitBar 1s forwards;
 }
 </style>

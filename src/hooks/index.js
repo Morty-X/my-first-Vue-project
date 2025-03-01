@@ -1,5 +1,6 @@
 import { ref, onMounted, reactive, unref, toValue, toRaw } from 'vue';
 import _ from 'lodash';
+// 导入 settings.json 文件中的数据作为默认数据
 import defaultSetting from '../../config/settings.json';
 import store from 'store';
 // 配置文件内容
@@ -27,24 +28,43 @@ export function clickOutside(domRef, callback) {
   });
 }
 
+// *****思路******
+// 页面刚打开时 从本地存储中读取布局的数据，如果有，就以读取的数据值为准，渲染页面状态
+// 当用户拖动分割线时，改变布局的相关数据，用户停止拖动后，重置本地存储的对应数据
+
 export function useSetting(key) {
-  // 响应式数据 config
-  const config = reactive({ setting: null });
-  // 1.在本地存储中获取 数据
-  // 2.若没有数据，则保存默认配置
+  // 响应式数据 setting
+  const setting = ref(null);
+
+  // 从本地存储中获取数据
   const settingFormCache = store.get('setting');
-
-  if (!settingFormCache) {
-    // 刚开始 本地存储没有数据就使用默认配置
-    // 并将默认配置 本地存储
-    config.setting = defaultSetting;
-    store.set('setting', defaultSetting);
-  } else {
-  }
-
-  // 1.用户更改配置，就将用户 的配置项和默认配置项进行合并 得到一个合并后的对象
-  // 2.将合并后的对象 本地存储
   
-  function undateSetting(key) {}
+  //有数据
+  if (settingFormCache) {
+    setting.value = settingFormCache?.[key];
+  } else {
+    // 无数据
+    setting.value = defaultSetting?.[key];
+    store.set('setting', defaultSetting);
+  }
+  function undateSetting() {}
+
   return { setting, undateSetting };
+
+  // // 响应式数据 config
+  // const config = reactive({ setting: null });
+  // // 1.在本地存储中获取 数据
+  // // 2.若没有数据，则保存默认配置
+  // const settingFormCache = store.get('setting');
+  // if (!settingFormCache) {
+  //   // 刚开始 本地存储没有数据就使用默认配置
+  //   // 并将默认配置 本地存储
+  //   config.setting = defaultSetting;
+  //   store.set('setting', defaultSetting);
+  // } else {
+  // }
+  // // 1.用户更改配置，就将用户 的配置项和默认配置项进行合并 得到一个合并后的对象
+  // // 2.将合并后的对象 本地存储
+  // function undateSetting(key) {}
+  // return { config, undateSetting };
 }

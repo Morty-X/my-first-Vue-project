@@ -5,7 +5,7 @@
       "height": 200
     },
     "leftBar": {
-      "visible": true,
+      "visible": false,
       "width": 200
     },
     "rightBar": {
