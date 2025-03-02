@@ -27,27 +27,32 @@
         </div>
 
         <!-- 使用Vue条件渲染图标 -->
-        <div @click.stop="layoutSetting.leftBar.visible = !layoutSetting.leftBar.visible"
+
+        <!-- leftBar 控制图标 -->
+        <div @click.stop="updateLayoutSetting({ leftBar: { visible: !layoutSetting.leftBar.visible } })"
           class="flex ml-[6px] cursor-pointer">
           <Icon v-if="layoutSetting.leftBar.visible" icon="tabler:layout-sidebar-filled" width="24" height="24"
             style="color: #cccccc" />
           <Icon v-else icon="meteor-icons:sidebar" width="22" height="22" style="color: #cccccc" />
 
         </div>
+        <!-- bottomBar 控制图标 -->
 
-        <div @click.stop="layoutSetting.bottomBar.visible = !layoutSetting.bottomBar.visible"
+        <div @click.stop="updateLayoutSetting({ bottomBar: { visible: !layoutSetting.bottomBar.visible } })"
           class="flex ml-[6px] cursor-pointer">
           <Icon v-if="layoutSetting.bottomBar.visible" icon="tabler:layout-bottombar-filled" width="24" height="24"
             style="color: #cccccc" />
           <Icon v-else icon="ci:bar-bottom" width="24" height="24" style="color: #cccccc" />
         </div>
 
-        <div @click.stop="layoutSetting.rightBar.visible = !layoutSetting.rightBar.visible"
+        <!-- rightBar 控制图标 -->
+        <div @click.stop="updateLayoutSetting({ rightBar: { visible: !layoutSetting.rightBar.visible } })"
           class="flex ml-[6px] cursor-pointer">
           <Icon v-if="layoutSetting.rightBar.visible" icon="tabler:layout-sidebar-right-filled" width="24" height="24"
             style="color: #cccccc" />
           <Icon v-else icon="tabler:layout-sidebar-right" width="24" height="24" style="color: #cccccc" />
         </div>
+
       </div>
     </div>
 
@@ -78,7 +83,9 @@
       <!-- middle -->
       <!-- 文件目录列表 -->
 
-      <div v-show="layoutSetting.leftBar.visible" class="w-[307px] bg-[#252526]">
+      <div :style="{
+        width: `${layoutSetting.leftBar.width}px`
+      }" v-show="layoutSetting.leftBar.visible" class="w-[307px] relative bg-[#252526]">
         <!-- 下拉菜单功能 -->
         <div class="flex items-center h-[30px] text-[14px] text-[#eee] justify-between px-[12px]">
           <span>EXPLORER</span>
@@ -98,6 +105,9 @@
         <ul class="text-[#fff] bg-red-400 px-[12px] text-[16px]">
           <li class="cursor-pointer" v-for="file in responseData" :key="file.name" v-text="file.name"></li>
         </ul>
+        <!-- 左右拖动的分割线 -->
+        <div ref="leftBarRef"
+          class=" cursor-col-resize w-[3px] absolute top-0 right-0 h-full transition-all hover:bg-[#007acc]"> </div>
       </div>
 
       <!-- 中间文件预览区 -->
@@ -105,13 +115,23 @@
       <div class="flex-1 bg-[#1e1e1e] flex flex-col">
         <div class="bg-[#1e1e1e] flex-1"></div>
 
-        <div v-show="layoutSetting.bottomBar.visible" class="w-full border-[#363636] border-t h-[200px] bg-[#1e1e1e]">
-          <!-- transition ease-in-out delay-250 hover:bg-[#007acc] -->
-          <div ref="elementRef" class="w-full cursor-row-resize h-[3px] highlight"></div>
+        <div :style="{
+          height: `${layoutSetting.bottomBar.height}px`
+        }" v-show="layoutSetting.bottomBar.visible" class="w-full border-[#363636] border-t h-[200px] bg-[#1e1e1e]">
+          <!-- 上下拖动分割线 -->
+          <div ref="elementRef" class="w-full cursor-row-resize h-[3px] transition-all hover:bg-[#007acc]"></div>
         </div>
       </div>
 
-      <div v-show="layoutSetting.rightBar.visible" class="w-[300px] px-[12px] py-[8px] h-full bg-[#252526]">
+      <div :style="{
+        width: `${layoutSetting.rightBar.width}px`
+      }" v-show="layoutSetting.rightBar.visible" class=" relative w-[300px] px-[12px] py-[8px] h-full bg-[#252526]">
+
+        <!-- 右侧滑动的分割线 -->
+        <div ref="rightBarRef"
+          class=" transition-all hover:bg-[#007acc] w-[3px] h-full absolute cursor-col-resize left-0 top-0  ">
+        </div>
+
         <div class="w-full flex h-[20px]">
           <div class="w-1/2 flex text-left justify-start items-center">
             <div class="mr-[1vw] w-[20px] h-[24px] flex justify-center items-center border-b border-[#e1e1e1]">
@@ -136,13 +156,17 @@
               class="flex w-[20px] h-[20px] justify-center items-center ml-[3px] cursor-pointer hover:bg-[#363737] rounded-[0.4vw]">
               <Icon icon="ri:more-line" width="18" height="18" style="color: #c5c5c5" />
             </div>
-            <div @click="rightBarVisible = !rightBarVisible" v-show="rightBarVisible"
+
+            <div @click.stop="updateLayoutSetting({ rightBar: { visible: !layoutSetting.rightBar.visible } })"
+              v-show="layoutSetting.rightBar.visible"
               class="flex w-[20px] h-[20px] justify-center items-center ml-[3px] cursor-pointer hover:bg-[#363737] rounded-[0.4vw]">
               <Icon icon="ion:close-outline" width="18" height="18" style="color: #c5c5c5" />
             </div>
           </div>
         </div>
+
       </div>
+
     </div>
 
     <!-- end 底部内容 -->
@@ -163,7 +187,7 @@
           <Icon icon="ion:reload" width="16" height="16" style="color: #fff" />
         </div>
 
-        <div @click="bottomBarVisible = !bottomBarVisible"
+        <div @click.stop="updateLayoutSetting({ bottomBar: { visible: !layoutSetting.bottomBar.visible } })"
           class="w-[70px] select-none cursor-pointer align-bottom text-center h-full hover:bg-[#1f8ad2]">
           <Icon class="inline-block mx-[3px] translate-y-[2px]" icon="codicon:error" width="16" height="16"
             style="color: #fff" />
@@ -213,17 +237,18 @@ import baz from '@/components/baz.vue';
 import { Icon } from '@iconify/vue';
 import { clickOutside, useSetting } from '@/hooks';
 import axios from 'axios';
+import { watch } from 'vue';
 
 // 根据 key值('layout') 获取对应的数据，以及一个改变属性值的方法
 // 这个方法便于后期制作拖拽分栏效果改变DOM的样式
 // 另外，这些数据需要本地存储
 
-const { setting: layoutSetting, undateSetting: undateLayoutSetting } =
+const { setting: layoutSetting, updateSetting: updateLayoutSetting } =
   useSetting('layout');
-
 console.log(toValue(layoutSetting));
 
-console.log(toValue(layoutSetting).leftBar.visible);
+
+// console.log(toValue(layoutSetting).leftBar.visible);
 
 // 取消dom操作 转而用指令替代
 // 在 Vue.js中 指令是操作dom的唯一方法
@@ -280,10 +305,7 @@ const objDataArr = [
 ];
 
 // 头部右侧图标 点击切换图标 并且更改页面布局
-// 用于控制 侧边栏显示/隐藏
-const leftBarVisible = ref(false);
-const rightBarVisible = ref(false);
-const bottomBarVisible = ref(false);
+
 // 那么现在我们需要将 侧边栏的布局状态保存在 localStorage中
 // 1.在 settings.json文件中编写配置项
 // 2.页面第一次加载，从localstorage中读取我们设置 layout 项中的数据渲染页面
@@ -407,7 +429,7 @@ watchEffect(() => {
   // console.log(data.value, error.value, loading.value);
   // 我需要让 data没有数据的情况下 默认返回一个空数组，这样在根据数据进行渲染
   // 页面时不会报 语法错误(找不到数据)
-  console.log(responseData.value);
+  // console.log(responseData.value);
 });
 
 /**
@@ -433,6 +455,11 @@ function useMoveColumn(domEleRef) {
     // 这里使用解构赋值从事件对象中提取 x 和 y 属性，并将它们分别赋值给 startX 和 startY 变量
     // 事件对象是 mousedown 事件的事件对象，包含了鼠标按下时的位置信息
     unref(domEleRef).addEventListener('mousedown', ({ x: startX, y: startY }) => {
+
+      // 重置鼠标移动的距离
+      distanceX.value = 0;
+      distanceY.value = 0;
+
       // 定义一个 onMouseMove 函数，用于计算鼠标移动时的位置变化
       // 这里使用解构赋值从事件对象中提取 x 和 y 属性，并将它们分别赋值给 currentX 和 currentY 变量
       // 通过计算当前鼠标位置与起始位置的差值，得到鼠标移动的距离
@@ -446,6 +473,10 @@ function useMoveColumn(domEleRef) {
 
       // 添加 mouseup 事件监听器，当鼠标释放时移除 mousemove 事件监听器
       document.addEventListener('mouseup', () => {
+        // 上一次移动之后，要记录此次底部栏的高度
+        bottomBarH.value = layoutSetting.bottomBar.height;
+        leftBarW.value = layoutSetting.leftBar.width;
+        rightBarW.value = layoutSetting.rightBar.width;
         document.removeEventListener('mousemove', onMouseMove);
       });
     });
@@ -455,12 +486,62 @@ function useMoveColumn(domEleRef) {
   return { distanceX, distanceY };
 }
 
+
+
+// 对 bottomBar 高度拖动 (与分割线DOM元素绑定)
 const elementRef = ref(null);
-const { distanceX, distanceY } = useMoveColumn(elementRef);
-watchEffect(() => {
-  console.log(distanceX.value);
-  console.log(distanceY.value);
-});
+// 返回鼠标Y轴方向移动的距离
+const { distanceY } = useMoveColumn(elementRef);
+// 将底部终端 dom 元素的高度设置为响应式数据
+const bottomBarH = ref(layoutSetting.bottomBar.height)
+watch(distanceY, () => {
+  // 更新布局设置，这里假设 updateLayoutSetting 是一个正确的函数
+  updateLayoutSetting({
+    bottomBar: {
+      height: bottomBarH.value - distanceY.value
+    }
+  });
+})
+
+
+// 对 leftBar 宽度拖动 (与分割线DOM元素绑定)
+const leftBarRef = ref(null)
+
+const { distanceX } = useMoveColumn(leftBarRef)
+// 将左侧 dom 元素的高度设置为响应式数据
+const leftBarW = ref(layoutSetting.leftBar.width)
+
+watch(distanceX, () => {
+  // 更新布局设置，这里假设 updateLayoutSetting 是一个正确的函数
+  updateLayoutSetting({
+    leftBar: {
+      width: leftBarW.value + distanceX.value
+    }
+  });
+})
+
+
+
+// 对 rightBar 宽度拖动 (与分割线DOM元素绑定)
+const rightBarRef = ref(null)
+
+const { distanceX: rightBardistanceX } = useMoveColumn(rightBarRef)
+// 将左侧 dom 元素的高度设置为响应式数据
+const rightBarW = ref(layoutSetting.rightBar.width)
+
+watch(rightBardistanceX, () => {
+  // 更新布局设置，这里假设 updateLayoutSetting 是一个正确的函数
+  updateLayoutSetting({
+    rightBar: {
+      width: rightBarW.value - rightBardistanceX.value
+    }
+  });
+})
+
+
+
+
+
 
 const bar1 = reactive({
   a: 1,

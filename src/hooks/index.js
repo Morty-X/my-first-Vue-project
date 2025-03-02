@@ -1,4 +1,4 @@
-import { ref, onMounted, reactive, unref, toValue, toRaw } from 'vue';
+import { ref, onMounted, reactive, toRef, unref, toValue, toRaw } from 'vue';
 import _ from 'lodash';
 // 导入 settings.json 文件中的数据作为默认数据
 import defaultSetting from '../../config/settings.json';
@@ -32,39 +32,42 @@ export function clickOutside(domRef, callback) {
 // 页面刚打开时 从本地存储中读取布局的数据，如果有，就以读取的数据值为准，渲染页面状态
 // 当用户拖动分割线时，改变布局的相关数据，用户停止拖动后，重置本地存储的对应数据
 
+/**
+ * 自定义设置钩子
+ * 用于管理和更新应用的设置，包括从本地存储加载设置和更新设置
+ *
+ * @param {string} key 设置的键名，用于在本地存储中标识设置
+ * @returns {Object} 返回一个对象，包含当前设置和更新设置的方法
+ */
 export function useSetting(key) {
   // 响应式数据 setting
-  const setting = ref(null);
+  const config = reactive({ setting: null });
 
   // 从本地存储中获取数据
   const settingFormCache = store.get('setting');
-  
-  //有数据
-  if (settingFormCache) {
-    setting.value = settingFormCache?.[key];
-  } else {
-    // 无数据
-    setting.value = defaultSetting?.[key];
+
+  // 如果本地存储中没有设置数据，则使用默认设置
+  if (!settingFormCache) {
+    config.setting = defaultSetting;
     store.set('setting', defaultSetting);
+  } else {
+    // 加载本地存储中的设置
+    config.setting = settingFormCache;
   }
-  function undateSetting() {}
 
-  return { setting, undateSetting };
+  /**
+   * 更新设置的方法
+   * 接受一个参数对象，用于更新当前设置
+   *
+   * @param {Object} params 要更新的设置参数
+   */
+  const updateSetting = (params) => {
+    // 使用lodash的merge函数合并新的设置，仅更新布局相关的设置
+    const setting = _.merge(config.setting, { layout: { ...params } });
+    config.setting = setting;
+    store.set('setting', setting);
+  };
 
-  // // 响应式数据 config
-  // const config = reactive({ setting: null });
-  // // 1.在本地存储中获取 数据
-  // // 2.若没有数据，则保存默认配置
-  // const settingFormCache = store.get('setting');
-  // if (!settingFormCache) {
-  //   // 刚开始 本地存储没有数据就使用默认配置
-  //   // 并将默认配置 本地存储
-  //   config.setting = defaultSetting;
-  //   store.set('setting', defaultSetting);
-  // } else {
-  // }
-  // // 1.用户更改配置，就将用户 的配置项和默认配置项进行合并 得到一个合并后的对象
-  // // 2.将合并后的对象 本地存储
-  // function undateSetting(key) {}
-  // return { config, undateSetting };
+  // 返回当前设置和更新设置的方法
+  return { setting: toRef(config, 'setting').value[key], updateSetting };
 }
