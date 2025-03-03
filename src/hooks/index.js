@@ -12,7 +12,7 @@ console.log('默认配置文件内容', defaultSetting);
  * @param {Object} domRef - 一个包含DOM元素引用的对象，通常是一个React ref
  * @param {Function} callback - 当检测到点击事件发生在指定DOM元素外部时执行的回调函数
  */
-export function clickOutside(domRef, callback) {
+export function useClickOutside(domRef, callback) {
   // 当组件挂载到DOM后执行的逻辑
   onMounted(function () {
     // 在整个文档上添加点击事件监听器
@@ -70,4 +70,33 @@ export function useSetting(key) {
 
   // 返回当前设置和更新设置的方法
   return { setting: toRef(config, 'setting').value[key], updateSetting };
+}
+
+export function sendApiRequest(
+  apiFun,
+  options = {
+    defaultData,
+  }
+) {
+  // ref()接收一个内部值(ref小括号内的值)返回一个响应式的、可更改的 ref 对象
+  const data = ref(options.defaultData ?? null);
+  const error = ref(undefined);
+  // 是否请求完成
+  const loading = ref(false);
+  apiFun()
+    .then((res) => {
+      data.value = res.data;
+    })
+    .catch((err) => {
+      error.value = err;
+    })
+    .finally(() => {
+      console.log('请求已发送！');
+      loading.value = true;
+    });
+  return {
+    data,
+    error,
+    loading,
+  };
 }

@@ -6,16 +6,36 @@
 
       <div class="w-[60vw] h-[35px] flex justify-center items-center">
         <div class="w-[15vw] justify-between items-center mr-[18px] h-full">
-          <Icon class="inline-block cursor-pointer" icon="solar:arrow-left-outline" width="20" height="20"
-            style="color: #fff" />
-          <Icon class="inline-block ml-[10px] cursor-pointer" icon="solar:arrow-right-linear" width="20" height="20"
-            style="color: #fff" />
+          <Icon
+            class="inline-block cursor-pointer"
+            icon="solar:arrow-left-outline"
+            width="20"
+            height="20"
+            style="color: #fff"
+          />
+          <Icon
+            class="inline-block ml-[10px] cursor-pointer"
+            icon="solar:arrow-right-linear"
+            width="20"
+            height="20"
+            style="color: #fff"
+          />
         </div>
 
         <div
-          class="cursor-pointer w-[40vw] mr-[8vw] h-[26px] flex justify-center items-center border border-[#737373] rounded-[8px] hover:bg-[#4b4b4b] bg-[#3c3c3d]">
-          <Icon class="mr-[6px]" icon="quill:search" width="18" height="18" style="color: #aeaeae" />
-          <span v-text="str" class="text-[14px] hover:text-[#929292] text-[#cccccc]"></span>
+          class="cursor-pointer w-[40vw] mr-[8vw] h-[26px] flex justify-center items-center border border-[#737373] rounded-[8px] hover:bg-[#4b4b4b] bg-[#3c3c3d]"
+        >
+          <Icon
+            class="mr-[6px]"
+            icon="quill:search"
+            width="18"
+            height="18"
+            style="color: #aeaeae"
+          />
+          <span
+            v-text="str"
+            class="text-[14px] hover:text-[#929292] text-[#cccccc]"
+          ></span>
         </div>
       </div>
 
@@ -23,36 +43,91 @@
 
       <div class="h-full w-[20vw] justify-end pr-[10px] flex items-center">
         <div class="flex ml-[6px] cursor-pointer">
-          <Icon class="cursor-pointer" icon="codicon:layout" width="24" height="24" style="color: #cccccc" />
+          <Icon
+            class="cursor-pointer"
+            icon="codicon:layout"
+            width="24"
+            height="24"
+            style="color: #cccccc"
+          />
         </div>
 
         <!-- 使用Vue条件渲染图标 -->
 
         <!-- leftBar 控制图标 -->
-        <div @click.stop="updateLayoutSetting({ leftBar: { visible: !layoutSetting.leftBar.visible } })"
-          class="flex ml-[6px] cursor-pointer">
-          <Icon v-if="layoutSetting.leftBar.visible" icon="tabler:layout-sidebar-filled" width="24" height="24"
-            style="color: #cccccc" />
-          <Icon v-else icon="meteor-icons:sidebar" width="22" height="22" style="color: #cccccc" />
-
+        <div
+          @click.stop="
+            updateLayoutSetting({
+              leftBar: { visible: !layoutSetting.leftBar.visible },
+            })
+          "
+          class="flex ml-[6px] cursor-pointer"
+        >
+          <Icon
+            v-if="layoutSetting.leftBar.visible"
+            icon="tabler:layout-sidebar-filled"
+            width="24"
+            height="24"
+            style="color: #cccccc"
+          />
+          <Icon
+            v-else
+            icon="meteor-icons:sidebar"
+            width="22"
+            height="22"
+            style="color: #cccccc"
+          />
         </div>
         <!-- bottomBar 控制图标 -->
 
-        <div @click.stop="updateLayoutSetting({ bottomBar: { visible: !layoutSetting.bottomBar.visible } })"
-          class="flex ml-[6px] cursor-pointer">
-          <Icon v-if="layoutSetting.bottomBar.visible" icon="tabler:layout-bottombar-filled" width="24" height="24"
-            style="color: #cccccc" />
-          <Icon v-else icon="ci:bar-bottom" width="24" height="24" style="color: #cccccc" />
+        <div
+          @click.stop="
+            updateLayoutSetting({
+              bottomBar: { visible: !layoutSetting.bottomBar.visible },
+            })
+          "
+          class="flex ml-[6px] cursor-pointer"
+        >
+          <Icon
+            v-if="layoutSetting.bottomBar.visible"
+            icon="tabler:layout-bottombar-filled"
+            width="24"
+            height="24"
+            style="color: #cccccc"
+          />
+          <Icon
+            v-else
+            icon="ci:bar-bottom"
+            width="24"
+            height="24"
+            style="color: #cccccc"
+          />
         </div>
 
         <!-- rightBar 控制图标 -->
-        <div @click.stop="updateLayoutSetting({ rightBar: { visible: !layoutSetting.rightBar.visible } })"
-          class="flex ml-[6px] cursor-pointer">
-          <Icon v-if="layoutSetting.rightBar.visible" icon="tabler:layout-sidebar-right-filled" width="24" height="24"
-            style="color: #cccccc" />
-          <Icon v-else icon="tabler:layout-sidebar-right" width="24" height="24" style="color: #cccccc" />
+        <div
+          @click.stop="
+            updateLayoutSetting({
+              rightBar: { visible: !layoutSetting.rightBar.visible },
+            })
+          "
+          class="flex ml-[6px] cursor-pointer"
+        >
+          <Icon
+            v-if="layoutSetting.rightBar.visible"
+            icon="tabler:layout-sidebar-right-filled"
+            width="24"
+            height="24"
+            style="color: #cccccc"
+          />
+          <Icon
+            v-else
+            icon="tabler:layout-sidebar-right"
+            width="24"
+            height="24"
+            style="color: #cccccc"
+          />
         </div>
-
       </div>
     </div>
 
@@ -61,160 +136,308 @@
       <!-- left -->
       <!-- 左侧 选项 图标 部分 -->
 
-      <div class="w-[48px] bg-[#333] flex-col flex py-[10px] justify-between cursor-pointer">
-
-        <div class="w-full h-[300px] flex flex-col justify-between items-center">
-          <Icon icon="codicon:github" width="28" height="28" class="text-[#fff] hover:text-[#c2c2c2]" />
+      <div
+        class="w-[48px] bg-[#333] flex-col flex py-[10px] justify-between cursor-pointer"
+      >
+        <div
+          class="w-full h-[300px] flex flex-col justify-between items-center"
+        >
+          <Icon
+            icon="codicon:github"
+            width="28"
+            height="28"
+            class="text-[#fff] hover:text-[#c2c2c2]"
+          />
           <!-- =========下列可循环渲染=========== -->
           <!-- ["fa-solid:copy","quill:search",'tdesign:git-branch','qlementine-icons:run-debug-16'
             ,'codicon:extensions','mage:robot'] -->
-          <Icon v-for="(item, index) in customerIconName" v-bind:key="item" v-bind:icon="item"
-            @click="customerMenuItemIndex = index" width="28" height="28" class="hover:text-[#fff] text-[#858585]"
-            :class="{ 'text-[#fff]': customerMenuItemIndex === index }" />
+          <Icon
+            v-for="(item, index) in customerIconName"
+            v-bind:key="item"
+            v-bind:icon="item"
+            @click="customerMenuItemIndex = index"
+            width="28"
+            height="28"
+            class="hover:text-[#fff] text-[#858585]"
+            :class="{ 'text-[#fff]': customerMenuItemIndex === index }"
+          />
         </div>
 
-        <div class="w-full flex-1 items-center flex flex-col justify-end gap-[18px]">
+        <div
+          class="w-full flex-1 items-center flex flex-col justify-end gap-[18px]"
+        >
           <!-- ['qlementine-icons:user-16','material-symbols:settings-outline'] -->
-          <Icon v-for="(item, index) in systemIconName" v-bind:key="item" :icon="item" width="28" height="28"
-            class="hover:text-[#fff] text-[#858585]" />
+          <Icon
+            v-for="(item, index) in systemIconName"
+            v-bind:key="item"
+            :icon="item"
+            width="28"
+            height="28"
+            class="hover:text-[#fff] text-[#858585]"
+          />
         </div>
       </div>
 
       <!-- middle -->
       <!-- 文件目录列表 -->
 
-      <div :style="{
-        width: `${layoutSetting.leftBar.width}px`
-      }" v-show="layoutSetting.leftBar.visible" class="w-[307px] relative bg-[#252526]">
+      <div
+        :style="{
+          width: `${layoutSetting.leftBar.width}px`,
+        }"
+        v-show="layoutSetting.leftBar.visible"
+        class="w-[307px] relative bg-[#252526]"
+      >
         <!-- 下拉菜单功能 -->
-        <div class="flex items-center h-[30px] text-[14px] text-[#eee] justify-between px-[12px]">
+        <div
+          class="flex items-center h-[30px] text-[14px] text-[#eee] justify-between px-[12px]"
+        >
           <span>EXPLORER</span>
 
-          <div v-on:click.stop="opendrowdown"
-            class="cursor-pointer relative w-[24px] h-[24px] rounded-[6px] hover:bg-[#363737]">
-            <span class="inline-block w-[24px] h-[24px] text-center leading-[24px]">···</span>
-
-            <!-- 点击 ... 后右边出现的选项卡 -->
-            <div ref="dropdownContains" v-show="drowdownVisible"
-              class="w-[150px] py-[6px] flex flex-col gap-[2px] px-[4px] bg-[#252526] border border-[#454545] rounded-[10px]">
-              <div class="w-full pl-[6px] leading-[28px] rounded-[6px] h-[28px] hover:bg-[#0078d4]"
-                v-for="item in drowdownList" v-bind:key="item" v-text="item"></div>
-            </div>
-
-
-          </div>
+          <!-- 点击 ... 后右边出现的下拉菜单 -->
+          <!-- ============= -->
+          <dropdown @isChecked="checkedCallBack" :data="arrA1">
+            <Icon
+              icon="mdi-light:settings"
+              width="28"
+              height="28"
+              style="color: red"
+            />
+          </dropdown>
+          <!-- ============= -->
         </div>
         <ul class="text-[#fff] bg-red-400 px-[12px] text-[16px]">
-          <li class="cursor-pointer" v-for="file in responseData" :key="file.name" v-text="file.name"></li>
+          <li
+            class="cursor-pointer"
+            v-for="file in responseData"
+            :key="file.name"
+            v-text="file.name"
+          ></li>
         </ul>
         <!-- 左右拖动的分割线 -->
-        <div ref="leftBarRef"
-          class=" cursor-col-resize w-[3px] absolute top-0 right-0 h-full transition-all hover:bg-[#007acc]"> </div>
+        <div
+          ref="leftBarRef"
+          class="cursor-col-resize w-[3px] absolute top-0 right-0 h-full transition-all hover:bg-[#007acc]"
+        ></div>
       </div>
 
       <!-- 中间文件预览区 -->
 
-      <div class="flex-1 bg-[#1e1e1e] flex flex-col">
-        <div class="bg-[#1e1e1e] flex-1"></div>
+      <div class="flex-1 bg-[#1e1e1e] flex flex-col text-[#fff]">
+        <div class="bg-[#1e1e1e]"></div>
 
-        <div :style="{
-          height: `${layoutSetting.bottomBar.height}px`
-        }" v-show="layoutSetting.bottomBar.visible" class="w-full border-[#363636] border-t h-[200px] bg-[#1e1e1e]">
+        <div
+          :style="{
+            height: `${layoutSetting.bottomBar.height}px`,
+          }"
+          v-show="layoutSetting.bottomBar.visible"
+          class="w-full border-[#363636] border-t h-[200px] bg-[#1e1e1e]"
+        >
           <!-- 上下拖动分割线 -->
-          <div ref="elementRef" class="w-full cursor-row-resize h-[3px] transition-all hover:bg-[#007acc]"></div>
+          <div
+            ref="elementRef"
+            class="w-full cursor-row-resize h-[3px] transition-all hover:bg-[#007acc]"
+          ></div>
         </div>
       </div>
 
-      <div :style="{
-        width: `${layoutSetting.rightBar.width}px`
-      }" v-show="layoutSetting.rightBar.visible" class=" relative w-[300px] px-[12px] py-[8px] h-full bg-[#252526]">
-
+      <div
+        :style="{
+          width: `${layoutSetting.rightBar.width}px`,
+        }"
+        v-show="layoutSetting.rightBar.visible"
+        class="relative w-[300px] px-[12px] py-[8px] h-full bg-[#252526]"
+      >
         <!-- 右侧滑动的分割线 -->
-        <div ref="rightBarRef"
-          class=" transition-all hover:bg-[#007acc] w-[3px] h-full absolute cursor-col-resize left-0 top-0  ">
-        </div>
+        <div
+          ref="rightBarRef"
+          class="transition-all hover:bg-[#007acc] w-[3px] h-full absolute cursor-col-resize left-0 top-0"
+        ></div>
 
         <div class="w-full flex h-[20px]">
           <div class="w-1/2 flex text-left justify-start items-center">
-            <div class="mr-[1vw] w-[20px] h-[24px] flex justify-center items-center border-b border-[#e1e1e1]">
-              <Icon icon="ion:chatbox-ellipses-outline" width="16" height="16"
-                class="hover:text-[#b2b2b2] text-[#e1e1e1]" />
+            <div
+              class="mr-[1vw] w-[20px] h-[24px] flex justify-center items-center border-b border-[#e1e1e1]"
+            >
+              <Icon
+                icon="ion:chatbox-ellipses-outline"
+                width="16"
+                height="16"
+                class="hover:text-[#b2b2b2] text-[#e1e1e1]"
+              />
             </div>
-            <div class="mr-[1vw] w-[20px] h-[24px] flex justify-center items-center">
-              <Icon icon="fluent:clipboard-text-edit-24-regular" width="16" height="16"
-                class="hover:text-[#e1e1e1] text-[#b2b2b2]" />
+            <div
+              class="mr-[1vw] w-[20px] h-[24px] flex justify-center items-center"
+            >
+              <Icon
+                icon="fluent:clipboard-text-edit-24-regular"
+                width="16"
+                height="16"
+                class="hover:text-[#e1e1e1] text-[#b2b2b2]"
+              />
             </div>
           </div>
           <div class="w-1/2 h-full justify-end flex items-center">
             <div class="flex">
-              <Icon icon="si:add-duotone" width="24" height="24" style="color: #787878" />
+              <Icon
+                icon="si:add-duotone"
+                width="24"
+                height="24"
+                style="color: #787878"
+              />
             </div>
 
             <div class="flex">
-              <Icon icon="radix-icons:countdown-timer" width="18" height="18" style="color: #787878" />
+              <Icon
+                icon="radix-icons:countdown-timer"
+                width="18"
+                height="18"
+                style="color: #787878"
+              />
             </div>
 
             <div
-              class="flex w-[20px] h-[20px] justify-center items-center ml-[3px] cursor-pointer hover:bg-[#363737] rounded-[0.4vw]">
-              <Icon icon="ri:more-line" width="18" height="18" style="color: #c5c5c5" />
+              class="flex w-[20px] h-[20px] justify-center items-center ml-[3px] cursor-pointer hover:bg-[#363737] rounded-[0.4vw]"
+            >
+              <Icon
+                icon="ri:more-line"
+                width="18"
+                height="18"
+                style="color: #c5c5c5"
+              />
             </div>
 
-            <div @click.stop="updateLayoutSetting({ rightBar: { visible: !layoutSetting.rightBar.visible } })"
+            <div
+              @click.stop="
+                updateLayoutSetting({
+                  rightBar: { visible: !layoutSetting.rightBar.visible },
+                })
+              "
               v-show="layoutSetting.rightBar.visible"
-              class="flex w-[20px] h-[20px] justify-center items-center ml-[3px] cursor-pointer hover:bg-[#363737] rounded-[0.4vw]">
-              <Icon icon="ion:close-outline" width="18" height="18" style="color: #c5c5c5" />
+              class="flex w-[20px] h-[20px] justify-center items-center ml-[3px] cursor-pointer hover:bg-[#363737] rounded-[0.4vw]"
+            >
+              <Icon
+                icon="ion:close-outline"
+                width="18"
+                height="18"
+                style="color: #c5c5c5"
+              />
             </div>
           </div>
         </div>
 
-      </div>
+        <!-- ========== -->
+        <dropdown :data="arrA2">
+          <!-- 插槽 slot  我希望点击此图标 作为下拉菜单的显示开关。注意 组件标签内包含的图标是
+           属于组件本身的-->
 
+          <Icon
+            icon="mdi-light:settings"
+            width="28"
+            height="28"
+            style="color: red"
+          />
+        </dropdown>
+
+        <!-- ========== -->
+      </div>
     </div>
 
     <!-- end 底部内容 -->
-    <div class="w-full flex justify-between text-[#fff] text-[12px] h-[22px] bg-[#007acc]">
+    <div
+      class="w-full flex justify-between text-[#fff] text-[12px] h-[22px] bg-[#007acc]"
+    >
       <div class="h-[22px] flex-1 inline-flex">
-        <div class="w-[100px] h-full hover:bg-[#329071] bg-[#16825d] flex justify-center items-center cursor-pointer">
-          <Icon icon="icon-park-outline:code-one" width="16" height="16" style="color: #fff" />
+        <div
+          class="w-[100px] h-full hover:bg-[#329071] bg-[#16825d] flex justify-center items-center cursor-pointer"
+        >
+          <Icon
+            icon="icon-park-outline:code-one"
+            width="16"
+            height="16"
+            style="color: #fff"
+          />
 
           vuejs/vue
         </div>
 
-        <div class="w-[70px] h-full hover:bg-[#1f8ad2] flex justify-center items-center cursor-pointer">
-          <Icon class="mr-[4px]" icon="oui:branch" width="14" height="14" style="color: #fff" />
+        <div
+          class="w-[70px] h-full hover:bg-[#1f8ad2] flex justify-center items-center cursor-pointer"
+        >
+          <Icon
+            class="mr-[4px]"
+            icon="oui:branch"
+            width="14"
+            height="14"
+            style="color: #fff"
+          />
           main
         </div>
 
-        <div class="w-[22px] h-[22px] flex cursor-pointer justify-center items-center hover:bg-[#1f8ad2]">
+        <div
+          class="w-[22px] h-[22px] flex cursor-pointer justify-center items-center hover:bg-[#1f8ad2]"
+        >
           <Icon icon="ion:reload" width="16" height="16" style="color: #fff" />
         </div>
 
-        <div @click.stop="updateLayoutSetting({ bottomBar: { visible: !layoutSetting.bottomBar.visible } })"
-          class="w-[70px] select-none cursor-pointer align-bottom text-center h-full hover:bg-[#1f8ad2]">
-          <Icon class="inline-block mx-[3px] translate-y-[2px]" icon="codicon:error" width="16" height="16"
-            style="color: #fff" />
+        <div
+          @click.stop="
+            updateLayoutSetting({
+              bottomBar: { visible: !layoutSetting.bottomBar.visible },
+            })
+          "
+          class="w-[70px] select-none cursor-pointer align-bottom text-center h-full hover:bg-[#1f8ad2]"
+        >
+          <Icon
+            class="inline-block mx-[3px] translate-y-[2px]"
+            icon="codicon:error"
+            width="16"
+            height="16"
+            style="color: #fff"
+          />
           <span class="inline-block translate-y-[3px]">0</span>
-          <Icon class="inline-block mx-[3px] translate-y-[2px]" icon="typcn:warning-outline" width="16" height="16"
-            style="color: #fff" />
+          <Icon
+            class="inline-block mx-[3px] translate-y-[2px]"
+            icon="typcn:warning-outline"
+            width="16"
+            height="16"
+            style="color: #fff"
+          />
           <span class="inline-block translate-y-[3px]">0</span>
         </div>
 
         <div class="w-[200px] h-full flex">
           <div class="w-[100px] h-full flex justify-center items-center">
-            <Icon icon="line-md:heart" width="18" height="18" style="color: #fff" />
+            <Icon
+              icon="line-md:heart"
+              width="18"
+              height="18"
+              style="color: #fff"
+            />
             <span class="text-[14px] ml-[4px] cursor-default"> Sponsors:</span>
           </div>
-          <div class="text-[14px] h-full px-[8px] hover:bg-[#1f8ad2] cursor-pointer text-center">
+          <div
+            class="text-[14px] h-full px-[8px] hover:bg-[#1f8ad2] cursor-pointer text-center"
+          >
             morty
           </div>
         </div>
       </div>
       <div class="h-[22px] w-[130px] flex items-center">
-        <div class="cursor-pointer w-[100px] hover:bg-[#1f8ad2] text-center h-full leading-[22px]">
+        <div
+          class="cursor-pointer w-[100px] hover:bg-[#1f8ad2] text-center h-full leading-[22px]"
+        >
           Layout: US
         </div>
-        <div class="w-[22px] h-full flex justify-center items-center hover:bg-[#1f8ad2] cursor-pointer">
-          <Icon icon="mdi:bell-outline" width="14" height="14" style="color: #fff" />
+        <div
+          class="w-[22px] h-full flex justify-center items-center hover:bg-[#1f8ad2] cursor-pointer"
+        >
+          <Icon
+            icon="mdi:bell-outline"
+            width="14"
+            height="14"
+            style="color: #fff"
+          />
         </div>
       </div>
     </div>
@@ -233,12 +456,29 @@ import {
   toRefs,
   toRaw,
   toValue,
-  watch
+  watch,
 } from 'vue';
 
 import { Icon } from '@iconify/vue';
-import { clickOutside, useSetting } from '@/hooks';
+import { useSetting, sendApiRequest } from '@/hooks';
 import axios from 'axios';
+// 引入下拉菜单组件
+import dropdown from '@/components/dropdown.vue';
+
+const arrA1 = [
+  { name: 'Open Edits', disable: false },
+  { name: 'HIHI', disable: true },
+  { name: 'Folders', disable: false },
+  { name: 'Outline', disable: true },
+  { name: 'Timeline', disable: false },
+];
+const arrA2 = [
+  { name: '选项一', disable: false },
+  { name: '选项二', disable: true },
+  { name: '选项三', disable: false },
+  { name: '选项四', disable: true },
+  { name: '选项五', disable: false },
+];
 
 // 导入组件
 // import { dropDown } from '@/components/dropDown.vue'
@@ -250,7 +490,6 @@ import axios from 'axios';
 const { setting: layoutSetting, updateSetting: updateLayoutSetting } =
   useSetting('layout');
 console.log(toValue(layoutSetting));
-
 
 // console.log(toValue(layoutSetting).leftBar.visible);
 
@@ -286,8 +525,7 @@ console.log(toValue(layoutSetting));
 
 // 接受一个内部值，返回一个响应式的、可更改的 ref 对象
 var str = ref('world!');
-
-const drowdownList = ['Open Edits', 'Folders', 'Outline', 'Timeline'];
+// const drowdownList = ['Open Edits', 'Folders', 'Outline', 'Timeline'];
 
 const objDataArr = [
   {
@@ -331,35 +569,35 @@ const objDataArr = [
 // 将点击某 dom 元素外的区域，该DOM元素隐藏的逻辑封装成一个 函数
 
 // 将点击 ... 下拉选择框出现，点击菜单外围，菜单隐藏的功能 组合起来
-function actionDropDown() {
-  // 菜单是否显示
-  let visible = ref(false);
+// function actionDropDown() {
+//   // 菜单是否显示
+//   let visible = ref(false);
 
-  // 菜单 dom 元素
-  const domRef = ref(null);
-  /**
-   * 打开对话框或界面的函数
-   * 将 visible.value 设置为 true，以控制界面的显示状态
-   */
-  const open = () => (visible.value = true);
-  // 使用 clickOutside 指令监听点击事件，当点击不在 domRef 元素内部时
-  // 将 visible 的值设置为 false
-  clickOutside(domRef, () => {
-    visible.value = false;
-  });
+//   // 菜单 dom 元素
+//   const domRef = ref(null);
+//   /**
+//    * 打开对话框或界面的函数
+//    * 将 visible.value 设置为 true，以控制界面的显示状态
+//    */
+//   const open = () => (visible.value = true);
+//   // 使用 clickOutside 指令监听点击事件，当点击不在 domRef 元素内部时
+//   // 将 visible 的值设置为 false
+//   clickOutside(domRef, () => {
+//     visible.value = false;
+//   });
 
-  return { visible, domRef, open };
-}
+//   return { visible, domRef, open };
+// }
 
 // 解构赋值从actionDropDown函数返回的对象中的属性，以便在当前作用域内直接使用
 // visible属性重命名为drowdownVisible，用于控制下拉菜单的显示与隐藏
 // domRef属性重命名为dropdownContains，引用下拉菜单的DOM元素
 // open属性重命名为opendrowdown，用于执行打开下拉菜单的操作
-const {
-  visible: drowdownVisible,
-  domRef: dropdownContains,
-  open: opendrowdown,
-} = actionDropDown();
+// const {
+//   visible: drowdownVisible,
+//   domRef: dropdownContains,
+//   open: opendrowdown,
+// } = actionDropDown();
 
 // =============================================================
 // 左侧图标选项卡鼠标点击 当前图标高亮 其它图标不高亮
@@ -388,35 +626,6 @@ watchEffect(() => {
 // ==============================================
 // 发送 axios 请求 渲染文件夹列表
 // 由于 向后端发送 axios 请求 十分常用 可写成一个函数方便复用
-
-function sendApiRequest(
-  apiFun,
-  options = {
-    defaultData,
-  }
-) {
-  // ref()接收一个内部值(ref小括号内的值)返回一个响应式的、可更改的 ref 对象
-  const data = ref(options.defaultData ?? null);
-  const error = ref(undefined);
-  // 是否请求完成
-  const loading = ref(false);
-  apiFun()
-    .then((res) => {
-      data.value = res.data;
-    })
-    .catch((err) => {
-      error.value = err;
-    })
-    .finally(() => {
-      console.log('请求已发送！');
-      loading.value = true;
-    });
-  return {
-    data,
-    error,
-    loading,
-  };
-}
 
 const {
   data: responseData,
@@ -458,94 +667,86 @@ function useMoveColumn(domEleRef) {
     // 当鼠标按下时，获取鼠标按下的位置，并监听鼠标移动事件
     // 这里使用解构赋值从事件对象中提取 x 和 y 属性，并将它们分别赋值给 startX 和 startY 变量
     // 事件对象是 mousedown 事件的事件对象，包含了鼠标按下时的位置信息
-    unref(domEleRef).addEventListener('mousedown', ({ x: startX, y: startY }) => {
+    unref(domEleRef).addEventListener(
+      'mousedown',
+      ({ x: startX, y: startY }) => {
+        // 重置鼠标移动的距离
+        distanceX.value = 0;
+        distanceY.value = 0;
 
-      // 重置鼠标移动的距离
-      distanceX.value = 0;
-      distanceY.value = 0;
+        // 定义一个 onMouseMove 函数，用于计算鼠标移动时的位置变化
+        // 这里使用解构赋值从事件对象中提取 x 和 y 属性，并将它们分别赋值给 currentX 和 currentY 变量
+        // 通过计算当前鼠标位置与起始位置的差值，得到鼠标移动的距离
+        const onMouseMove = ({ x: currentX, y: currentY }) => {
+          distanceX.value = currentX - startX;
+          distanceY.value = currentY - startY;
+        };
 
-      // 定义一个 onMouseMove 函数，用于计算鼠标移动时的位置变化
-      // 这里使用解构赋值从事件对象中提取 x 和 y 属性，并将它们分别赋值给 currentX 和 currentY 变量
-      // 通过计算当前鼠标位置与起始位置的差值，得到鼠标移动的距离
-      const onMouseMove = ({ x: currentX, y: currentY }) => {
-        distanceX.value = currentX - startX;
-        distanceY.value = currentY - startY;
-      };
+        // 添加 mousemove 事件监听器，当鼠标移动时调用 onMouseMove 函数
+        document.addEventListener('mousemove', onMouseMove);
 
-      // 添加 mousemove 事件监听器，当鼠标移动时调用 onMouseMove 函数
-      document.addEventListener('mousemove', onMouseMove);
-
-      // 添加 mouseup 事件监听器，当鼠标释放时移除 mousemove 事件监听器
-      document.addEventListener('mouseup', () => {
-        // 上一次移动之后，要记录此次底部栏的高度
-        bottomBarH.value = layoutSetting.bottomBar.height;
-        leftBarW.value = layoutSetting.leftBar.width;
-        rightBarW.value = layoutSetting.rightBar.width;
-        document.removeEventListener('mousemove', onMouseMove);
-      });
-    });
+        // 添加 mouseup 事件监听器，当鼠标释放时移除 mousemove 事件监听器
+        document.addEventListener('mouseup', () => {
+          // 上一次移动之后，要记录此次底部栏的高度
+          bottomBarH.value = layoutSetting.bottomBar.height;
+          leftBarW.value = layoutSetting.leftBar.width;
+          rightBarW.value = layoutSetting.rightBar.width;
+          document.removeEventListener('mousemove', onMouseMove);
+        });
+      }
+    );
   });
 
   // 返回鼠标移动的距离，包括 X 轴和 Y 轴的距离
   return { distanceX, distanceY };
 }
 
-
-
 // 对 bottomBar 高度拖动 (与分割线DOM元素绑定)
 const elementRef = ref(null);
 // 返回鼠标Y轴方向移动的距离
 const { distanceY } = useMoveColumn(elementRef);
 // 将底部终端 dom 元素的高度设置为响应式数据
-const bottomBarH = ref(layoutSetting.bottomBar.height)
+const bottomBarH = ref(layoutSetting.bottomBar.height);
 watch(distanceY, () => {
   // 更新布局设置，这里假设 updateLayoutSetting 是一个正确的函数
   updateLayoutSetting({
     bottomBar: {
-      height: bottomBarH.value - distanceY.value
-    }
+      height: bottomBarH.value - distanceY.value,
+    },
   });
-})
-
+});
 
 // 对 leftBar 宽度拖动 (与分割线DOM元素绑定)
-const leftBarRef = ref(null)
+const leftBarRef = ref(null);
 
-const { distanceX } = useMoveColumn(leftBarRef)
+const { distanceX } = useMoveColumn(leftBarRef);
 // 将左侧 dom 元素的高度设置为响应式数据
-const leftBarW = ref(layoutSetting.leftBar.width)
+const leftBarW = ref(layoutSetting.leftBar.width);
 
 watch(distanceX, () => {
   // 更新布局设置，这里假设 updateLayoutSetting 是一个正确的函数
   updateLayoutSetting({
     leftBar: {
-      width: leftBarW.value + distanceX.value
-    }
+      width: leftBarW.value + distanceX.value,
+    },
   });
-})
-
-
+});
 
 // 对 rightBar 宽度拖动 (与分割线DOM元素绑定)
-const rightBarRef = ref(null)
+const rightBarRef = ref(null);
 
-const { distanceX: rightBardistanceX } = useMoveColumn(rightBarRef)
+const { distanceX: rightBardistanceX } = useMoveColumn(rightBarRef);
 // 将左侧 dom 元素的高度设置为响应式数据
-const rightBarW = ref(layoutSetting.rightBar.width)
+const rightBarW = ref(layoutSetting.rightBar.width);
 
 watch(rightBardistanceX, () => {
   // 更新布局设置，这里假设 updateLayoutSetting 是一个正确的函数
   updateLayoutSetting({
     rightBar: {
-      width: rightBarW.value - rightBardistanceX.value
-    }
+      width: rightBarW.value - rightBardistanceX.value,
+    },
   });
-})
-
-
-
-
-
+});
 
 const bar1 = reactive({
   a: 1,
@@ -563,6 +764,10 @@ console.log(refsBar.b.value);
 console.log(refsBar.c.value);
 // 将reactive 格式数据转为 原始格式
 console.log(JSON.parse(JSON.stringify(toValue(bar1))));
+
+function checkedCallBack(item) {
+  console.log('🚀 ~ App.vue:769 ~ checkedCallBack ~ item:', item);
+}
 </script>
 
 <!-- ===========================CSS样式============================== -->
