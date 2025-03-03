@@ -93,13 +93,15 @@
           <div v-on:click.stop="opendrowdown"
             class="cursor-pointer relative w-[24px] h-[24px] rounded-[6px] hover:bg-[#363737]">
             <span class="inline-block w-[24px] h-[24px] text-center leading-[24px]">···</span>
+
             <!-- 点击 ... 后右边出现的选项卡 -->
             <div ref="dropdownContains" v-show="drowdownVisible"
               class="w-[150px] py-[6px] flex flex-col gap-[2px] px-[4px] bg-[#252526] border border-[#454545] rounded-[10px]">
-              <!-- <div class="w-full rounded-[6px] h-[28px] bg-[#0078d4]"></div> -->
               <div class="w-full pl-[6px] leading-[28px] rounded-[6px] h-[28px] hover:bg-[#0078d4]"
                 v-for="item in drowdownList" v-bind:key="item" v-text="item"></div>
             </div>
+
+
           </div>
         </div>
         <ul class="text-[#fff] bg-red-400 px-[12px] text-[16px]">
@@ -231,13 +233,15 @@ import {
   toRefs,
   toRaw,
   toValue,
+  watch
 } from 'vue';
-// 导入组件
-import baz from '@/components/baz.vue';
+
 import { Icon } from '@iconify/vue';
 import { clickOutside, useSetting } from '@/hooks';
 import axios from 'axios';
-import { watch } from 'vue';
+
+// 导入组件
+// import { dropDown } from '@/components/dropDown.vue'
 
 // 根据 key值('layout') 获取对应的数据，以及一个改变属性值的方法
 // 这个方法便于后期制作拖拽分栏效果改变DOM的样式
