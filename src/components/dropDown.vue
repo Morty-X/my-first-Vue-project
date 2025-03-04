@@ -7,7 +7,11 @@
     ></div>
 
     <!-- 内置组件slot它的作用是对你传递的子标签的引用指定渲染位置 -->
-    <div ref="main" @click.stop="visible = true" class="inline-block">
+    <div
+      ref="main"
+      @click.stop="visible = true"
+      class="w-[20px] flex justify-center items-center h-[20px] hover:cursor-pointer hover:bg-[#393a3a] rounded-[4px]"
+    >
       <slot></slot>
     </div>
 
@@ -40,7 +44,7 @@
 
 import { defineEmits, ref, useAttrs } from 'vue';
 import { useClickOutside } from '@/hooks';
-  
+
 const visible = ref(false);
 const drowdownList = ['Open Edits', 'Folders', 'Outline', 'Timeline'];
 // useAttrs 使用这个组件上的属性
@@ -55,7 +59,7 @@ useClickOutside(main, () => {
   visible.value = false;
 });
 
-// 给组件添加自定义事件 isChecked 
+// 给组件添加自定义事件 isChecked
 const emit = defineEmits(['isChecked']);
 
 function triggerEvent(item) {

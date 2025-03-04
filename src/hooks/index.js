@@ -3,8 +3,6 @@ import _ from 'lodash';
 // 导入 settings.json 文件中的数据作为默认数据
 import defaultSetting from '../../config/settings.json';
 import store from 'store';
-// 配置文件内容
-console.log('默认配置文件内容', defaultSetting);
 
 /**
  * 在指定的DOM元素外部点击时触发回调函数

@@ -186,11 +186,32 @@
           width: `${layoutSetting.leftBar.width}px `,
         }"
         v-show="layoutSetting.leftBar.visible"
-        class="w-[307px] relative overflow-hidden bg-[#252526]"
+        class="w-[307px] relative bg-[#252526]"
       >
         <!-- 下拉菜单功能 -->
-        <div class="h-full bg-red-200 float-left w-[200px]">哈哈哈哈</div>
+        <div class="h-full float-left w-full">
+          <div
+            class="flex items-center h-[30px] text-[14px] text-[#eee] justify-between px-[12px]"
+          >
+            <span>EXPLORER</span>
+            <!-- 点击 ... 后右边出现的下拉菜单 -->
+            <!-- ============= -->
+            <dropdown @isChecked="checkedCallBack" :data="arrA1">
+              <Icon
+                icon="fluent-mdl2:more"
+                width="16"
+                height="16"
+                style="color: #cccccc"
+              />
+            </dropdown>
+            <!-- ============= -->
+          </div>
 
+          <!-- 下面递归生成文件目录树组件 -->
+
+          <!--在VUE主页面中插入 Tree组件并给它 绑定 data 属性 -->
+          <Tree :data="data" :expandKeys="expandIds" @node-click="fn"></Tree>
+        </div>
         <!-- 左右拖动的分割线 -->
         <div
           ref="leftBarRef"
@@ -303,8 +324,6 @@
             </div>
           </div>
         </div>
-
-      
       </div>
     </div>
 
@@ -407,6 +426,8 @@
       </div>
     </div>
   </div>
+  <!-- 文件目录树 -->
+  <filetree :data="responseData"> </filetree>
 </template>
 
 <script setup>
@@ -427,6 +448,7 @@ import {
 import { Icon } from '@iconify/vue';
 import { useSetting, sendApiRequest } from '@/hooks';
 import axios from 'axios';
+import filetree from '@/components/filetree.vue';
 // 引入下拉菜单组件
 import dropdown from '@/components/dropdown.vue';
 
@@ -446,6 +468,95 @@ const arrA2 = [
 ];
 
 // 导入组件
+import Tree from '@/components/Tree.vue';
+// 对数据修改 给每一级目录 添加 id  属性用以判断该目录的子目录展开/显示
+// 展开的目录id
+
+const expandIds = ref([]);
+
+//  要实现点击展开目录功能 需要给每一个树状结构添加点击事件
+
+const data = [
+  {
+    label: '一级 1',
+    id: 1,
+    children: [
+      {
+        label: '二级 1-1',
+        id: 2,
+        children: [
+          {
+            label: '三级 1-1-1',
+            id: 3,
+          },
+        ],
+      },
+    ],
+  },
+
+  {
+    label: '一级 2',
+    id: 4,
+    children: [
+      {
+        label: '二级 2-1',
+        id: 5,
+        children: [
+          {
+            label: '三级 2-1-1',
+          },
+        ],
+      },
+      {
+        label: '二级 2-2',
+        id: 6,
+        children: [
+          {
+            label: '三级 2-2-1',
+            id: 7,
+          },
+        ],
+      },
+    ],
+  },
+
+  {
+    label: '一级 3',
+    id: 8,
+    children: [
+      {
+        label: '二级 3-1',
+        id: 9,
+        children: [
+          {
+            label: '三级 3-1-1',
+            id: 10,
+          },
+        ],
+      },
+      {
+        label: '二级 3-2',
+        id: 11,
+        children: [
+          {
+            label: '三级 3-2-1',
+            id: 12,
+          },
+        ],
+      },
+    ],
+  },
+];
+
+function fn(id) {
+  console.log('🚀 ~ App.vue:92 ~ fn ~ id:', id);
+  const index = expandIds.value.indexOf(id);
+  if (index > -1) {
+    expandIds.value.splice(index, 1);
+  } else {
+    expandIds.value.push(id);
+  }
+}
 // import { dropDown } from '@/components/dropDown.vue'
 
 // 根据 key值('layout') 获取对应的数据，以及一个改变属性值的方法
@@ -584,14 +695,10 @@ const systemIconName = [
 ];
 
 const customerMenuItemIndex = ref(0);
-watchEffect(() => {
-  console.log('customerMenuItemIndex.value', customerMenuItemIndex.value);
-});
 
 // ==============================================
 // 发送 axios 请求 渲染文件夹列表
 // 由于 向后端发送 axios 请求 十分常用 可写成一个函数方便复用
-
 const {
   data: responseData,
   error,
@@ -599,7 +706,10 @@ const {
 } = sendApiRequest(() => axios.get('/veet/api'), {
   defaultData: [],
 });
-
+// 监听响应数据的变化 并更新文件目录结构内容
+watch([responseData], () => {
+  console.log('🚀 ~ App1.vue:623 ~ watch ~ responseData:', responseData.value);
+});
 // 它会以默认值输出 如何解决？
 watchEffect(() => {
   // 监听响应式数据的变化，并在变化时打印 data, error 和 loading 的值
@@ -607,7 +717,10 @@ watchEffect(() => {
   // console.log(data.value, error.value, loading.value);
   // 我需要让 data没有数据的情况下 默认返回一个空数组，这样在根据数据进行渲染
   // 页面时不会报 语法错误(找不到数据)
-  // console.log(responseData.value);
+  // console.log(
+  //   '🚀 ~ App1.vue:632 ~ watchEffect ~ responseData.value:',
+  //   responseData.value
+  // );
 });
 
 /**
