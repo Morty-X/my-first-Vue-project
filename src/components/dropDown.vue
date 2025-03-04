@@ -40,7 +40,7 @@
 
 import { defineEmits, ref, useAttrs } from 'vue';
 import { useClickOutside } from '@/hooks';
-
+  
 const visible = ref(false);
 const drowdownList = ['Open Edits', 'Folders', 'Outline', 'Timeline'];
 // useAttrs 使用这个组件上的属性

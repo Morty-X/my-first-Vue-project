@@ -1,10 +1,9 @@
 // import './main.css'
-import '@/main.css'
+import '@/main.css';
 
-// 导入Vue的核心功能模块 
+// 导入Vue的核心功能模块
 // 作用：创建一个Vue应用
-import { createApp } from 'vue'
-
+import { createApp } from 'vue';
 
 // 导入全局样式文件，用于统一管理项目的样式
 // import './style.scss'
@@ -18,7 +17,7 @@ import { createApp } from 'vue'
 // DOM操作  指令语法替代
 // 不允许使用DOM操作
 
-import App from './App.vue'
+import App from './App1.vue';
 
 // 创建 Vue 应用实例并挂载到 DOM 中
-createApp(App).mount('#app')
+createApp(App).mount('#app');
