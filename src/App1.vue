@@ -132,7 +132,7 @@
     </div>
 
     <!-- middle -->
-    <div class="flex-1 flex">
+    <div class="flex-1 flex overflow-hidden">
       <!-- left -->
       <!-- 左侧 选项 图标 部分 -->
 
@@ -166,7 +166,6 @@
         <div
           class="w-full flex-1 items-center flex flex-col justify-end gap-[18px]"
         >
-          <!-- ['qlementine-icons:user-16','material-symbols:settings-outline'] -->
           <Icon
             v-for="(item, index) in systemIconName"
             v-bind:key="item"
@@ -176,6 +175,7 @@
             class="hover:text-[#fff] text-[#858585]"
           />
         </div>
+
       </div>
 
       <!-- middle -->
@@ -189,9 +189,11 @@
         class="w-[307px] relative bg-[#252526]"
       >
         <!-- 下拉菜单功能 -->
-        <div class="h-full float-left w-full">
+        <div
+          class="h-full float-left flex flex-col  w-full px-[12px]"
+        >
           <div
-            class="flex items-center h-[30px] text-[14px] text-[#eee] justify-between px-[12px]"
+            class="flex items-center h-[30px] text-[14px] text-[#eee] justify-between"
           >
             <span>EXPLORER</span>
             <!-- 点击 ... 后右边出现的下拉菜单 -->
@@ -210,8 +212,11 @@
           <!-- 下面递归生成文件目录树组件 -->
 
           <!--在VUE主页面中插入 Tree组件并给它 绑定 data 属性 -->
-          <Tree :data="data" :expandKeys="expandIds" @node-click="fn"></Tree>
+          <div class="w-full overflow-auto scrollbar">
+            <Tree :data="data" :expandKeys="expandIds" @node-click="fn"></Tree>
+          </div>
         </div>
+
         <!-- 左右拖动的分割线 -->
         <div
           ref="leftBarRef"
@@ -426,8 +431,6 @@
       </div>
     </div>
   </div>
-  <!-- 文件目录树 -->
-  <filetree :data="responseData"> </filetree>
 </template>
 
 <script setup>
@@ -446,9 +449,8 @@ import {
 } from 'vue';
 
 import { Icon } from '@iconify/vue';
-import { useSetting, sendApiRequest } from '@/hooks';
+import { useSetting, sendApiRequest, mapObj } from '@/hooks';
 import axios from 'axios';
-import filetree from '@/components/filetree.vue';
 // 引入下拉菜单组件
 import dropdown from '@/components/dropdown.vue';
 
@@ -475,78 +477,103 @@ import Tree from '@/components/Tree.vue';
 const expandIds = ref([]);
 
 //  要实现点击展开目录功能 需要给每一个树状结构添加点击事件
+// ==============================================
+// 发送 axios 请求 渲染文件夹列表
+// 由于 向后端发送 axios 请求 十分常用 可写成一个函数方便复用
+const { data, error, loading } = sendApiRequest(() => axios.get('/veet/api'), {
+  defaultData: [],
+});
 
-const data = [
-  {
-    label: '一级 1',
-    id: 1,
-    children: [
-      {
-        label: '二级 1-1',
-        id: 2,
-        children: [
-          {
-            label: '三级 1-1-1',
-            id: 3,
-          },
-        ],
-      },
-    ],
-  },
+// onMounted(() => {
+//   console.log(
+//     '🚀 ~ App1.vue:481 ~ const{data,error,loading}=sendApiRequest ~ data:',
+//     data
+//   );
+// });
+// 它会以默认值输出 如何解决？
+watchEffect(() => {
+  // 监听响应式数据的变化，并在变化时打印 data, error 和 loading 的值
+  // 第一次会打印数据的默认值，此后只要数据发生改变，就会打印相关值
+  // console.log(data.value, error.value, loading.value);
+  // 我需要让 data没有数据的情况下 默认返回一个空数组，这样在根据数据进行渲染
+  // 页面时不会报 语法错误(找不到数据)
+  // console.log(
+  //   '🚀 ~ App1.vue:632 ~ watchEffect ~ responseData.value:',
+  //   responseData.value
+  // );
+});
 
-  {
-    label: '一级 2',
-    id: 4,
-    children: [
-      {
-        label: '二级 2-1',
-        id: 5,
-        children: [
-          {
-            label: '三级 2-1-1',
-          },
-        ],
-      },
-      {
-        label: '二级 2-2',
-        id: 6,
-        children: [
-          {
-            label: '三级 2-2-1',
-            id: 7,
-          },
-        ],
-      },
-    ],
-  },
+// const data = [
+//   {
+//     label: '一级 1',
+//     id: 1,
+//     children: [
+//       {
+//         label: '二级 1-1',
+//         id: 2,
+//         children: [
+//           {
+//             label: '三级 1-1-1',
+//             id: 3,
+//           },
+//         ],
+//       },
+//     ],
+//   },
 
-  {
-    label: '一级 3',
-    id: 8,
-    children: [
-      {
-        label: '二级 3-1',
-        id: 9,
-        children: [
-          {
-            label: '三级 3-1-1',
-            id: 10,
-          },
-        ],
-      },
-      {
-        label: '二级 3-2',
-        id: 11,
-        children: [
-          {
-            label: '三级 3-2-1',
-            id: 12,
-          },
-        ],
-      },
-    ],
-  },
-];
+//   {
+//     label: '一级 2',
+//     id: 4,
+//     children: [
+//       {
+//         label: '二级 2-1',
+//         id: 5,
+//         children: [
+//           {
+//             label: '三级 2-1-1',
+//           },
+//         ],
+//       },
+//       {
+//         label: '二级 2-2',
+//         id: 6,
+//         children: [
+//           {
+//             label: '三级 2-2-1',
+//             id: 7,
+//           },
+//         ],
+//       },
+//     ],
+//   },
+
+//   {
+//     label: '一级 3',
+//     id: 8,
+//     children: [
+//       {
+//         label: '二级 3-1',
+//         id: 9,
+//         children: [
+//           {
+//             label: '三级 3-1-1',
+//             id: 10,
+//           },
+//         ],
+//       },
+//       {
+//         label: '二级 3-2',
+//         id: 11,
+//         children: [
+//           {
+//             label: '三级 3-2-1',
+//             id: 12,
+//           },
+//         ],
+//       },
+//     ],
+//   },
+// ];
 
 function fn(id) {
   console.log('🚀 ~ App.vue:92 ~ fn ~ id:', id);
@@ -557,8 +584,8 @@ function fn(id) {
     expandIds.value.push(id);
   }
 }
-// import { dropDown } from '@/components/dropDown.vue'
 
+// import { dropDown } from '@/components/dropDown.vue'
 // 根据 key值('layout') 获取对应的数据，以及一个改变属性值的方法
 // 这个方法便于后期制作拖拽分栏效果改变DOM的样式
 // 另外，这些数据需要本地存储
@@ -566,8 +593,6 @@ function fn(id) {
 const { setting: layoutSetting, updateSetting: updateLayoutSetting } =
   useSetting('layout');
 console.log(toValue(layoutSetting));
-
-// console.log(toValue(layoutSetting).leftBar.visible);
 
 // 取消dom操作 转而用指令替代
 // 在 Vue.js中 指令是操作dom的唯一方法
@@ -601,6 +626,7 @@ console.log(toValue(layoutSetting));
 
 // 接受一个内部值，返回一个响应式的、可更改的 ref 对象
 var str = ref('world!');
+
 // const drowdownList = ['Open Edits', 'Folders', 'Outline', 'Timeline'];
 
 const objDataArr = [
@@ -695,33 +721,6 @@ const systemIconName = [
 ];
 
 const customerMenuItemIndex = ref(0);
-
-// ==============================================
-// 发送 axios 请求 渲染文件夹列表
-// 由于 向后端发送 axios 请求 十分常用 可写成一个函数方便复用
-const {
-  data: responseData,
-  error,
-  loading,
-} = sendApiRequest(() => axios.get('/veet/api'), {
-  defaultData: [],
-});
-// 监听响应数据的变化 并更新文件目录结构内容
-watch([responseData], () => {
-  console.log('🚀 ~ App1.vue:623 ~ watch ~ responseData:', responseData.value);
-});
-// 它会以默认值输出 如何解决？
-watchEffect(() => {
-  // 监听响应式数据的变化，并在变化时打印 data, error 和 loading 的值
-  // 第一次会打印数据的默认值，此后只要数据发生改变，就会打印相关值
-  // console.log(data.value, error.value, loading.value);
-  // 我需要让 data没有数据的情况下 默认返回一个空数组，这样在根据数据进行渲染
-  // 页面时不会报 语法错误(找不到数据)
-  // console.log(
-  //   '🚀 ~ App1.vue:632 ~ watchEffect ~ responseData.value:',
-  //   responseData.value
-  // );
-});
 
 /**
  * 使用 Vue 的组合式 API 实现的一个移动列的功能
@@ -867,5 +866,13 @@ function checkedCallBack(item) {
 
 .highlight:hover {
   animation: delayAppearSplitBar 1s forwards;
+}
+.scrollbar::-webkit-scrollbar,
+.scrollbar::-webkit-scrollbar-thumb {
+  width: 10px;
+  background-color: #252526;
+}
+.scrollbar:hover::-webkit-scrollbar-thumb {
+  background-color: #464647;
 }
 </style>

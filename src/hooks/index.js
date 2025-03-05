@@ -98,3 +98,17 @@ export function sendApiRequest(
     loading,
   };
 }
+
+export let mapObj = {
+  jpg: 'image',
+  png: 'image',
+  json: 'json',
+  html: 'html',
+  js: 'javascript',
+  ts: 'typescript',
+  yaml: 'yaml',
+  css: 'css',
+  md: 'mdsvex',
+  svg: 'svgr',
+  conf: 'nginx',
+};

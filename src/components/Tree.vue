@@ -4,17 +4,22 @@
   <!-- 在渲染子结构时判断需要展开的id值(expandKeys)中是否包含当前结构的 id 属性值 -->
   <!-- 如果包含，那么自此 id 值后的下一级结构就会渲染，否则不渲染 -->
 
-  <div class="pl-[12px]" v-for="item in props.data" :key="item.id">
+  <div v-for="item in props.data" :key="item.name">
     <!-- 当用户点击某个节点时，会触发上一级的 node-click 事件，并
      附带被点击节点的 ID，从而允许父组件处理这个点击事件。 -->
     <div
-      @click="emit('node-click', item.id)"
-      class="box-border hover:bg-[#2a2d2e] text-[14px] text-[#ccc] cursor-pointer"
+      @click="emit('node-click', item.fullPath)"
+      class="box-border hover:bg-[#2a2d2e] select-none text-[14px] text-[#ccc] cursor-pointer"
       :style="{
         paddingLeft: `${props.padding ?? 0}px`,
       }"
     >
-      {{ item.label }}
+      <!-- src="../../public/static/icons/3d.svg" -->
+      <div class="w-full h-[30px] inline-flex items-center">
+        <img :src="fn(item)" class="w-[16px] h-[16px] mr-[4px]" alt="" />
+
+        {{ item.name }}
+      </div>
     </div>
     <!-- 再给子树状结构 添加expandKeys属性 保证每个树状节点都具有 expandKeys属性-->
     <!-- emit('node-click', id) 用于触发一个名为 node-click 的事件，并将当前节点的 id 作为参数传递出去。 -->
@@ -22,7 +27,7 @@
       v-if="
         item.children &&
         item.children.length > 0 &&
-        props.expandKeys.includes(item.id)
+        props.expandKeys.includes(item.fullPath)
       "
       :data="item.children"
       :padding="props.padding + 10"
@@ -35,6 +40,7 @@
 <script setup>
 // 如何获取组件通过属性传递过来的数据(useAttrs)
 import { useAttrs, defineOptions, defineProps, defineEmits } from 'vue';
+import { mapObj } from '@/hooks';
 
 // 获取自定义属性上的值 (使用了)
 // const attrs = useAttrs();
@@ -70,7 +76,9 @@ const props = defineProps({
 // 在组件中自定义事件
 
 const emit = defineEmits(['node-click']);
-
+function fn(item) {
+  return `../../public/static/icons/${mapObj[item.icon] ?? 'tsil'}.svg`;
+}
 // ==================================================
 // attribute , property 都代表属性的意义
 // attribute 侧重表达HTML属性 出现在HTML标签中
